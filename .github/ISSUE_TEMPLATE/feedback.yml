@@ -1,0 +1,23 @@
+name: Opinia lub pomysł
+description: Pomóż ulepszyć rozgrywkę.
+title: "[Opinia] "
+body:
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Twoja opinia
+      description: Co się podobało? Co przeszkadzało? Co warto zmienić?
+    validations:
+      required: true
+  - type: dropdown
+    id: clarity
+    attributes:
+      label: Czy było wiadomo, co robić dalej?
+      options:
+        - Tak
+        - Czasami
+        - Nie
+  - type: input
+    id: day
+    attributes:
+      label: Do którego dnia udało się zagrać?

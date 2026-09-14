@@ -1,0 +1,31 @@
+name: Zgłoś błąd
+description: Coś nie działa podczas gry w SHOPSHIFT.
+title: "[Błąd] "
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Co się stało?
+      description: Opisz błąd i co miało się wydarzyć.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Jak odtworzyć problem?
+      placeholder: "1. Kupuję... 2. Klikam..."
+  - type: input
+    id: environment
+    attributes:
+      label: Urządzenie i przeglądarka
+      placeholder: "np. Windows / Chrome albo iPhone / Safari"
+  - type: input
+    id: version
+    attributes:
+      label: Wersja gry i dzień rozgrywki
+      placeholder: "0.1.2, dzień 5"
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Zrzut ekranu (opcjonalnie)
+      description: Nie dołączaj prywatnych informacji.
