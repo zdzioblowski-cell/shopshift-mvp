@@ -1,4 +1,4 @@
-# SHOPSHIFT 0.5 — stawki i ograniczenia modelu
+# SHOPSHIFT 0.6 — stawki i ograniczenia modelu
 
 Stan weryfikacji: 14 września 2026 r. Gra symuluje nowy sklep kosmetyczny w Polsce. Nie jest prognozą konkretnego sklepu ani kalkulatorem księgowym.
 
@@ -70,3 +70,19 @@ Sesje napływają przez 180 sekund aktywnej gry na kampanię. Każda ocenia bie�
 Nasycenie (parametry scenariusza, nie realne benchmarki): Google 300 zł, Meta 250 zł, Instagram 180 zł, TikTok 150 zł, artykuły 700 zł dziennie. Do progu ruch jest proporcjonalny do budżetu; powyżej wzrost jest logarytmiczny, a jakość dodatkowego zasięgu obniża konwersję. Dzienna losowość ruchu pozostaje ±30%. Model nie gwarantuje monotonicznego ROAS w każdej pojedynczej rozgrywce, ale oczekiwany zwrot na złotówkę maleje. Prognoza zakłada pełną dostępność i realizację; limit magazynu i brak towaru mogą dodatkowo ograniczyć sprzedaż.
 
 Układ raportów inspirowany dokumentacją [pozyskiwania ruchu GA4](https://support.google.com/analytics/answer/12923437?hl=pl) oraz [raportów e-commerce GA4](https://support.google.com/analytics/answer/12924131?hl=pl). Nie jest to implementacja ani kopia algorytmów Google. Starsze zapisy zachowują bieżący dzień; pełny model sesji zaczyna działać po otwarciu kolejnego dnia.
+
+## Magazyn, platforma i kredyt — 0.6.0
+
+Alert obejmuje produkty wcześniej zamówione lub obecne w sklepie. Ostrzegamy przy 5 sztukach dostępnych po uwzględnieniu kolejki klientów; przy 3+1 próg to 8 sztuk. Komunikat wskazuje dostawy w drodze. Powtarzamy powiadomienie po zmianie poziomu ostrzeżenia lub ponownym spadku zapasu, nie przy każdym odświeżeniu.
+
+Platforma sklepu: nowa gra ma 299 zł netto/miesiąc (9,97 zł na zamknięty dzień), również bez sprzedaży. Jest to ta sama pozycja, która wcześniej nazywała się „Sklep / narzędzia”, bez dodania drugiej opłaty. Stare zapisy zachowują swoją stawkę, np. 99 zł. Przykłady 169/299/729 zł pochodzą z regularnego miesięcznego cennika Shoper (Starter/Standard/Premium), odczytanego 15.09.2026. Wybór w grze zmienia wyłącznie koszt; nie odwzorowujemy funkcji ani dodatkowych opłat poszczególnych planów, promocji na pierwszy rok, dodatków czy integracji.
+
+Kredyt to oferta fikcyjnego banku: 12% nominalnie rocznie, stałe przez umowę w tej wersji gry, prowizja 2% potrącana z wypłaty. Są to założenia scenariusza, nie bieżąca oferta ani wyliczenie oprocentowania z aktualnego WIBOR. Punkt odniesienia stanowi struktura bankowych ofert: mBank publikuje prowizję za udzielenie 0–5%, a za wcześniejszą spłatę 3%, min. 100 zł. Bieżące promocje, np. marża 5,9% z kodem CELE do 15.09.2026, nie są pełnym oprocentowaniem i nie stanowią stawki użytej w grze.
+
+Limit w grze: 5000 zł od początku przy założeniu zdolności i poręczenia właściciela; 15 000 zł od dnia 31 przy dodatnim wyniku ostatnich 7 dni. Jedna aktywna umowa, brak nowego finansowania przy ujemnej gotówce. W rzeczywistości bank ocenia zdolność, historię i staż; przykładowo linia ING wymaga przynajmniej 6 miesięcy prowadzenia firmy. Przyspieszone odblokowanie po 30 dniach i dostępność dla nowej firmy są ułatwieniem rozgrywki.
+
+Okres: 3, 6 lub 12 miesięcy gry. Raty z równą częścią kapitałową, co 30 zamkniętych dni; odsetki naliczane codziennie od salda według roku 365 dni. Pierwsza rata po 30 zamkniętych dniach liczonych od dnia uruchomienia. Wpływ kredytu i spłata kapitału nie są przychodem ani kosztem. Prowizje i naliczone odsetki obciążają P&L; nieopłacone odsetki pozostają zobowiązaniem. Zakładka Finansowanie pokazuje zadłużenie, raty i koszt całkowity przy terminowej spłacie.
+
+Przy braku środków spłacamy dostępne odsetki, potem kapitał, a reszta pozostaje zaległością. Od przeterminowanego kapitału przyjmujemy 14,5% rocznie (parametr symulacji, nie wykładnia prawa); od pozostałego 12%. Bez odsetek od odsetek. Wcześniejsza spłata: 3% niewymagalnego kapitału, min. 100 zł. Nie symulujemy windykacji, BIK, zabezpieczeń, renegocjacji umowy ani zmian stóp. Prognoza kosztu nie uwzględnia opóźnień i wcześniejszego zamknięcia.
+
+Źródła odniesienia: [cennik Shoper](https://www.shoper.pl/pelny-cennik-uslug-shoper), [pożyczka dla firm mBank](https://www.mbank.pl/firmy/kredyty/biezace-zarzadzaniem-firma/pozyczka-dla-firm/), [tabele oprocentowania mBank](https://www.mbank.pl/pdf/oprocentowanie/tabela-firmy.pdf), [warunki linii ING](https://www.ing.pl/male-firmy/kredyty-i-pozyczki/linia-kredytowa-dla-malych-firm).

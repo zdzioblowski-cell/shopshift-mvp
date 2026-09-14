@@ -16,13 +16,13 @@ Przycisk „Przekaż opinię” otwiera formularze GitHub Issues. Zgłoszenia s�
 
 Postęp jest zapisywany lokalnie w przeglądarce. Można go eksportować/importować w Opcjach. Wydanie nie ma analityki, reklam sieciowych ani własnego backendu. Zapis z localhost nie przenosi się automatycznie na publiczny adres.
 
-## Zakres MVP 0.5.0
+## Zakres MVP 0.6.0
 
 6 fikcyjnych kosmetyków, 2 dostawców, 5 ścieżek marketingowych, ceny i zapasy, pakowanie, wysyłka, opinie, zwroty, pełny rachunek wyniku, 3 poziomy magazynu i pracownik. Kolorystyka: czerń, szarości i czerwień. Brak VAT, podatków, amortyzacji i natywnych pakietów mobilnych. Wszystkie produkty i dostawcy są fikcyjni.
 
 ## Kod i testy
 
-engine.js — niezależny silnik ekonomii; app.js — interfejs i zapis; scene.js — grafika Canvas; feedback.js — formularze opinii; style.css — wygląd. npm test uruchamia 31 testów ekonomii, w tym pełną symulację 30 dni. Node.js 18 lub nowszy wymagany tylko do testów i opcjonalnego lokalnego serwera.
+engine.js — niezależny silnik ekonomii; app.js — interfejs i zapis; scene.js — grafika Canvas; feedback.js — formularze opinii; style.css — wygląd. npm test uruchamia 38 testów ekonomii, w tym pełną symulację 30 dni. Node.js 18 lub nowszy wymagany tylko do testów i opcjonalnego lokalnego serwera.
 
 ## Rozgrywka na żywo
 
@@ -47,7 +47,7 @@ Promocje: obniżka, kupon START i 3+1. Koszyki 1–3 sztuki, a w 3+1 cztery sztu
 
 Zobacz [REALIA.md](REALIA.md) lub ekran „Koszty → Źródła i ograniczenia modelu”. Są tam źródła i wyraźnie oznaczone założenia. Nie ma jeszcze dokładnej księgowości VAT/podatków, a CPC i konwersje nie pochodzą z danych konkretnego sklepu.
 
-## Wersja 0.5.0 — sklep działa na żywo
+## Wersja 0.6.0 — sklep działa na żywo
 
 Zamówienia klientów: losowe odstępy 10–50 sekund. Towar można zamawiać w każdej fazie; każdy zakup przyjeżdża po losowych 1–5 minutach aktywnej gry. Przed startem kampanii warto poczekać na pierwszą dostawę. Brak towaru przy nadejściu klienta oznacza utracone zamówienie. Sesje napływają na żywo i reagują na aktualne ceny i promocje.
 
@@ -55,7 +55,7 @@ Dostawy są opłacane od razu, zajmują pojemność magazynu i zachowują pozost
 
 Przyciski nad magazynem: Zamów towar, Zmień ceny, Promocje, Marketing. Ceny, rabaty i darmową dostawę można zmieniać podczas sprzedaży; nowe ustawienia dotyczą kolejnych zamówień. Przyjęte zamówienia zachowują warunki zakupu. Budżety początkowe i koszty stałe ustala się przed otwarciem dnia; podczas kampanii można dokupić ruch.
 
-## Analityka i dynamiczny popyt — 0.5.0
+## Analityka i dynamiczny popyt — 0.6.0
 
 Analityka pokazuje wyłącznie fikcyjny sklep: rzeczywiście zasymulowane sesje, oglądanie produktów, koszyki, przejścia do kasy, przyjęte zakupy i wysłaną sprzedaż według źródła. Nie instalujemy Google Analytics i nie śledzimy graczy. Każdy zakup przypisujemy źródłu jednej sesji; powroty użytkowników i wielokanałowa atrybucja nie są modelowane. Organiczne i bezpośrednie wejścia są połączone. Zakupy to przyjęte zamówienia, a przychód/ROAS dotyczą wysłanych paczek, z dopłatą za dostawę, przed późniejszymi zwrotami.
 
@@ -64,3 +64,19 @@ Sesje napływają przez 180 sekund aktywnej gry na kampanię. Każda ocenia bie�
 Nasycenie (parametry scenariusza, nie realne benchmarki): Google 300 zł, Meta 250 zł, Instagram 180 zł, TikTok 150 zł, artykuły 700 zł dziennie. Do progu ruch jest proporcjonalny do budżetu; powyżej wzrost jest logarytmiczny, a jakość dodatkowego zasięgu obniża konwersję. Dzienna losowość ruchu pozostaje ±30%. Model nie gwarantuje monotonicznego ROAS w każdej pojedynczej rozgrywce, ale oczekiwany zwrot na złotówkę maleje. Prognoza zakłada pełną dostępność i realizację; limit magazynu i brak towaru mogą dodatkowo ograniczyć sprzedaż.
 
 Układ raportów inspirowany dokumentacją [pozyskiwania ruchu GA4](https://support.google.com/analytics/answer/12923437?hl=pl) oraz [raportów e-commerce GA4](https://support.google.com/analytics/answer/12924131?hl=pl). Nie jest to implementacja ani kopia algorytmów Google. Starsze zapisy zachowują bieżący dzień; pełny model sesji zaczyna działać po otwarciu kolejnego dnia.
+
+## Magazyn, platforma i kredyt — 0.6.0
+
+Alert obejmuje produkty wcześniej zamówione lub obecne w sklepie. Ostrzegamy przy 5 sztukach dostępnych po uwzględnieniu kolejki klientów; przy 3+1 próg to 8 sztuk. Komunikat wskazuje dostawy w drodze. Powtarzamy powiadomienie po zmianie poziomu ostrzeżenia lub ponownym spadku zapasu, nie przy każdym odświeżeniu.
+
+Platforma sklepu: nowa gra ma 299 zł netto/miesiąc (9,97 zł na zamknięty dzień), również bez sprzedaży. Jest to ta sama pozycja, która wcześniej nazywała się „Sklep / narzędzia”, bez dodania drugiej opłaty. Stare zapisy zachowują swoją stawkę, np. 99 zł. Przykłady 169/299/729 zł pochodzą z regularnego miesięcznego cennika Shoper (Starter/Standard/Premium), odczytanego 15.09.2026. Wybór w grze zmienia wyłącznie koszt; nie odwzorowujemy funkcji ani dodatkowych opłat poszczególnych planów, promocji na pierwszy rok, dodatków czy integracji.
+
+Kredyt to oferta fikcyjnego banku: 12% nominalnie rocznie, stałe przez umowę w tej wersji gry, prowizja 2% potrącana z wypłaty. Są to założenia scenariusza, nie bieżąca oferta ani wyliczenie oprocentowania z aktualnego WIBOR. Punkt odniesienia stanowi struktura bankowych ofert: mBank publikuje prowizję za udzielenie 0–5%, a za wcześniejszą spłatę 3%, min. 100 zł. Bieżące promocje, np. marża 5,9% z kodem CELE do 15.09.2026, nie są pełnym oprocentowaniem i nie stanowią stawki użytej w grze.
+
+Limit w grze: 5000 zł od początku przy założeniu zdolności i poręczenia właściciela; 15 000 zł od dnia 31 przy dodatnim wyniku ostatnich 7 dni. Jedna aktywna umowa, brak nowego finansowania przy ujemnej gotówce. W rzeczywistości bank ocenia zdolność, historię i staż; przykładowo linia ING wymaga przynajmniej 6 miesięcy prowadzenia firmy. Przyspieszone odblokowanie po 30 dniach i dostępność dla nowej firmy są ułatwieniem rozgrywki.
+
+Okres: 3, 6 lub 12 miesięcy gry. Raty z równą częścią kapitałową, co 30 zamkniętych dni; odsetki naliczane codziennie od salda według roku 365 dni. Pierwsza rata po 30 zamkniętych dniach liczonych od dnia uruchomienia. Wpływ kredytu i spłata kapitału nie są przychodem ani kosztem. Prowizje i naliczone odsetki obciążają P&L; nieopłacone odsetki pozostają zobowiązaniem. Zakładka Finansowanie pokazuje zadłużenie, raty i koszt całkowity przy terminowej spłacie.
+
+Przy braku środków spłacamy dostępne odsetki, potem kapitał, a reszta pozostaje zaległością. Od przeterminowanego kapitału przyjmujemy 14,5% rocznie (parametr symulacji, nie wykładnia prawa); od pozostałego 12%. Bez odsetek od odsetek. Wcześniejsza spłata: 3% niewymagalnego kapitału, min. 100 zł. Nie symulujemy windykacji, BIK, zabezpieczeń, renegocjacji umowy ani zmian stóp. Prognoza kosztu nie uwzględnia opóźnień i wcześniejszego zamknięcia.
+
+Źródła odniesienia: [cennik Shoper](https://www.shoper.pl/pelny-cennik-uslug-shoper), [pożyczka dla firm mBank](https://www.mbank.pl/firmy/kredyty/biezace-zarzadzaniem-firma/pozyczka-dla-firm/), [tabele oprocentowania mBank](https://www.mbank.pl/pdf/oprocentowanie/tabela-firmy.pdf), [warunki linii ING](https://www.ing.pl/male-firmy/kredyty-i-pozyczki/linia-kredytowa-dla-malych-firm).
