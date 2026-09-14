@@ -1,0 +1,253 @@
+{
+  "version": 1,
+  "seed": 3999320952,
+  "day": 1,
+  "phase": "fulfill",
+  "cash": 9340,
+  "level": 0,
+  "rating": 4.6,
+  "ratingCount": 5,
+  "stock": [
+    {
+      "qty": 24,
+      "value": 576
+    },
+    {
+      "qty": 0,
+      "value": 0
+    },
+    {
+      "qty": 0,
+      "value": 0
+    },
+    {
+      "qty": 0,
+      "value": 0
+    },
+    {
+      "qty": 0,
+      "value": 0
+    },
+    {
+      "qty": 0,
+      "value": 0
+    }
+  ],
+  "prices": [
+    59,
+    49,
+    39,
+    35,
+    45,
+    69
+  ],
+  "deliveries": [],
+  "orders": [
+    {
+      "index": 0,
+      "price": 59,
+      "freeShipping": false,
+      "returnRoll": 0.8181467319373041,
+      "quality": false,
+      "id": 1001,
+      "cost": 24,
+      "status": "new"
+    }
+  ],
+  "returns": [],
+  "reviews": [],
+  "history": [],
+  "ledger": {
+    "sales": 0,
+    "cogs": 0,
+    "shipping": 0,
+    "fees": 0,
+    "ads": 60,
+    "fixed": 0,
+    "refunds": 0,
+    "returnFees": 0,
+    "setup": 0
+  },
+  "total": {
+    "sales": 0,
+    "cogs": 0,
+    "shipping": 0,
+    "fees": 0,
+    "ads": 60,
+    "fixed": 0,
+    "refunds": 0,
+    "returnFees": 0,
+    "setup": 0
+  },
+  "campaign": 1,
+  "freeShipping": false,
+  "worker": false,
+  "shipped": 0,
+  "packedToday": 0,
+  "visits": 93,
+  "lost": 0,
+  "nextId": 1002,
+  "tutorial": 3,
+  "log": [
+    "Nowe zamówienie #1001 · Dewdrop.",
+    "Sklep otwarty. Nowe zamówienia będą pojawiać się pojedynczo co 20–30 sekund.",
+    "Zakup: 25 × Dewdrop za 600 zł · towar na regale.",
+    "Witaj w swoim pierwszym sklepie. Kup towar, ustaw ceny i otwórz dzień."
+  ],
+  "live": {
+    "queue": [
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.3037667325697839,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.550323381787166,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.34261666145175695,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.4470125038642436,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.5243818336166441,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.6152132696006447,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.7386928512714803,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.9652982030529529,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.7758818757720292,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.9042321203742176,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.2303478866815567,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.21261053928174078,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.38967780862003565,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.9562900655437261,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.43722964311018586,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.5363072601612657,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.29632085422053933,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.3468257437925786,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.9065343555994332,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.5730066106189042,
+        "quality": false
+      },
+      {
+        "index": 0,
+        "price": 59,
+        "freeShipping": false,
+        "returnRoll": 0.46832268591970205,
+        "quality": false
+      }
+    ],
+    "nextIn": 24312,
+    "job": {
+      "id": 1001,
+      "elapsed": 5000
+    }
+  }
+}
