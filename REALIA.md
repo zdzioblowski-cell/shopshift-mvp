@@ -1,4 +1,4 @@
-# SHOPSHIFT 0.3 — stawki i ograniczenia modelu
+# SHOPSHIFT 0.5 — stawki i ograniczenia modelu
 
 Stan weryfikacji: 14 września 2026 r. Gra symuluje nowy sklep kosmetyczny w Polsce. Nie jest prognozą konkretnego sklepu ani kalkulatorem księgowym.
 
@@ -36,7 +36,7 @@ Rzeczywisty ruch zmienia się losowo o około ±30%. Cenę, reputację, promocj�
 
 Nowy sklep ma około 2–5 wizyt organicznych dziennie i konwersję bazową 1,2%, więc zwykle nie otrzyma z nich zamówienia. Google zaleca ocenianie efektów SEO po tygodniach; niektóre zmiany wymagają miesięcy. W grze inwestycja SEO zaczyna wpływać na ruch po 30 dniach od poniesienia danego wydatku, a efekt jest stopniowy. Publikacje rozwijają również rozpoznawalność marki, ale zakup artykułu nie gwarantuje pozycji w wyszukiwarce.
 
-Popyt jest wyliczany przy otwarciu dnia. Zakwalifikowane zamówienia przychodzą co losowe 20–30 sekund; ten zegar jest kompresją czasu rozgrywki, a nie rzeczywistym czasem zakupów klientów. Ruch, który nie skonwertował, nie musi wywołać powiadomienia. Przy słabej kampanii może nie być żadnego zamówienia.
+Każda kolejna sesja ocenia bieżące ceny i promocję podczas napływu ruchu. Zakwalifikowane zamówienia przychodzą co losowe 10–50 sekund; ten zegar jest kompresją czasu rozgrywki, a nie rzeczywistym czasem zakupów klientów. Ruch, który nie skonwertował, nie musi wywołać powiadomienia. Przy słabej kampanii może nie być żadnego zamówienia.
 
 ## Promocje i raportowanie
 
@@ -60,3 +60,13 @@ Popyt jest wyliczany przy otwarciu dnia. Zakwalifikowane zamówienia przychodzą
 - [Stripe — cennik dla Polski](https://stripe.com/en-pl/pricing)
 - [Google Ads — koszt kliknięcia](https://support.google.com/google-ads/answer/116495?hl=pl)
 - [Google Search Central — czas oczekiwania na efekty SEO](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)
+
+## Analityka i dynamiczny popyt — 0.5.0
+
+Analityka pokazuje wyłącznie fikcyjny sklep: rzeczywiście zasymulowane sesje, oglądanie produktów, koszyki, przejścia do kasy, przyjęte zakupy i wysłaną sprzedaż według źródła. Nie instalujemy Google Analytics i nie śledzimy graczy. Każdy zakup przypisujemy źródłu jednej sesji; powroty użytkowników i wielokanałowa atrybucja nie są modelowane. Organiczne i bezpośrednie wejścia są połączone. Zakupy to przyjęte zamówienia, a przychód/ROAS dotyczą wysłanych paczek, z dopłatą za dostawę, przed późniejszymi zwrotami.
+
+Sesje napływają przez 180 sekund aktywnej gry na kampanię. Każda ocenia bieżącą cenę, promocję, reputację i jakość źródła. Rabat zwiększa prawdopodobieństwo zakupu przez niższą efektywną cenę, nie gwarantuje zysku. Kolejka zamówień jest obsługiwana co losowe 10–50 sekund; brak kupujących może wydłużyć oczekiwanie. Doładowanie w trakcie kampanii dodaje wyłącznie marginalny ruch do pozostałego czasu oraz od razu pobiera koszt mediów i prowizję agencji. Nie odtwarza już odwiedzonych sesji.
+
+Nasycenie (parametry scenariusza, nie realne benchmarki): Google 300 zł, Meta 250 zł, Instagram 180 zł, TikTok 150 zł, artykuły 700 zł dziennie. Do progu ruch jest proporcjonalny do budżetu; powyżej wzrost jest logarytmiczny, a jakość dodatkowego zasięgu obniża konwersję. Dzienna losowość ruchu pozostaje ±30%. Model nie gwarantuje monotonicznego ROAS w każdej pojedynczej rozgrywce, ale oczekiwany zwrot na złotówkę maleje. Prognoza zakłada pełną dostępność i realizację; limit magazynu i brak towaru mogą dodatkowo ograniczyć sprzedaż.
+
+Układ raportów inspirowany dokumentacją [pozyskiwania ruchu GA4](https://support.google.com/analytics/answer/12923437?hl=pl) oraz [raportów e-commerce GA4](https://support.google.com/analytics/answer/12924131?hl=pl). Nie jest to implementacja ani kopia algorytmów Google. Starsze zapisy zachowują bieżący dzień; pełny model sesji zaczyna działać po otwarciu kolejnego dnia.

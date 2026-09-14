@@ -1,6 +1,6 @@
 {
   "name": "shopshift",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "description": "SHOPSHIFT browser game vertical slice",
   "scripts": {
@@ -8,7 +8,8 @@
     "test": "node --test engine.test.cjs",
     "test:browser": "node browser.business.test.cjs",
     "test:motion": "node browser.motion.test.cjs",
-    "test:flow": "node browser.flow.test.cjs"
+    "test:flow": "node browser.flow.test.cjs",
+    "test:analytics": "node browser.analytics.test.cjs"
   },
   "engines": {
     "node": ">=18"
