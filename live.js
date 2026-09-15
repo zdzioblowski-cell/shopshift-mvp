@@ -17,24 +17,24 @@ window.refreshLiveUI=function(){
 window.refreshStockAlerts?.();
 window.refreshCampaignPulse?.();
 const seconds=Math.max(0,Math.ceil((E.DAY_DURATION-(game.dayElapsed||0))/1000));$('day-clock').hidden=game.phase!=='fulfill';$('day-clock').textContent='Koniec dnia za '+Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0');$('day-clock').classList.toggle('deadline-soon',seconds<=30);
-if(game.phase==='fulfill'&&seconds<=30&&warnedDay!==game.day){warnedDay=game.day;toast('Ostatnie 30 sekund! Wyślij paczki przed końcem dnia. Niewysłane zamówienia zostaną anulowane.');}
+if(game.phase==='fulfill'&&seconds<=30&&warnedDay!==game.day){warnedDay=game.day;toast('Ostatnie 30 sekund! Wyślij paczki przed końcem dnia. Niewysłane zamówienia przejdą na jutro.');}
 
 const active=game.phase==='fulfill',live=active?E.ensureLive(game):null,stopped=paused||document.hidden||$('dialog').open;
 const incoming=game.deliveries.filter(d=>d.remainingMs!==undefined);strip.hidden=!active&&!incoming.length;document.querySelectorAll('[data-delivery-clock]').forEach((el,i)=>{if(incoming[i])el.textContent=Math.ceil(incoming[i].remainingMs/1000)+' s';});$('pause-live').setAttribute('aria-pressed',String(paused));$('pause-live').textContent=paused?'▶ Wznów':'Ⅱ Pauza';Warehouse.setPaused?.(active?stopped:(document.hidden||$('dialog').open));
 if(!active){$('main-action').disabled=false;window.refreshJourney?.();window.refreshMobileControls?.();$('live-state').textContent=stopped?'Pauza':'Dostawy w drodze';$('arrival-clock').textContent=incoming.length?'Najbliższa dostawa za '+Math.ceil(Math.min(...incoming.map(d=>d.remainingMs))/1000)+' s':'';strip.classList.toggle('is-paused',stopped);return;}
 const pending=E.hasDemand(game);const waiting=game.orders.filter(o=>o.status==='new').length,packed=game.orders.filter(o=>o.status==='packed').length;
 $('live-state').textContent=stopped?'Pauza':pending?'Sklep działa na żywo':'Ruch dzisiejszej kampanii zakończony';strip.classList.toggle('is-paused',stopped);
-$('arrival-clock').textContent=pending?(waiting+packed>=E.LEVELS[game.level].limit?'Realizacja pełna — spakuj i wyślij paczki, aby przyjmować kolejne zakupy':!game.stock.some(x=>x.qty>=(E.config(game).promo.type==='bundle'?4:1))?'Brak towaru do sprzedaży — zamów dostawę':'Ruch z marketingu i organika · zakupy zależą od cen i promocji'):'Dzisiejszy ruch zakończony';
+$('arrival-clock').textContent=pending?(game.blockedVisits?'Przepustowość strony wyczerpana — wybierz większy pakiet w Rozwoju':!E.packingLeft(game)&&waiting?'Wydajność zespołu wykorzystana — nowe zakupy przyjmujemy, kolejka przejdzie na jutro':!game.stock.some(x=>x.qty>=(E.config(game).promo.type==='bundle'?4:1))?'Brak towaru do sprzedaży — zamów dostawę':'Ruch z marketingu i organika · zakupy zależą od cen i promocji'):'Dzisiejszy ruch zakończony';
 if(incoming.length)$('arrival-clock').textContent+=' · dostawa za '+Math.ceil(Math.min(...incoming.map(d=>d.remainingMs))/1000)+' s';
 const job=live.job&&game.orders.find(o=>o.id===live.job.id&&o.status==='new');
-const progress=job?live.job.elapsed/E.packingDuration(game):0;
-const operation=job?(progress<.32?'Idzie po produkt':progress<.52?'Przenosi produkt':progress<.86?'Pakuje zamówienie':'Odnosi paczkę'):'Przygotowuje stanowisko';
+document.querySelectorAll('[data-pack],#pack-five,#scene-pack').forEach(el=>{if(!E.packingLeft(game))el.disabled=true;});const progress=job?live.job.elapsed/E.packingDuration(game):0;
+const operation=!E.packingLeft(game)?'Wydajność na dziś wykorzystana':job?(progress<.32?'Idzie po produkt':progress<.52?'Przenosi produkt':progress<.86?'Pakuje zamówienie':'Odnosi paczkę'):'Przygotowuje stanowisko';
 $('packing-status').textContent=stopped?'Praca wstrzymana':operation+(job?' #'+job.id:'')+' · '+game.packedToday+' spakowanych';
 $('scene-status').textContent=packed?packed+' paczek gotowych dla kuriera':job?operation:pending?'Czekamy na kolejnego klienta':'Realizacja zamówień zakończona';
 $('mission-title').textContent=packed?'Paczki gotowe do drogi.':waiting?'Magazyn pracuje.':pending?'Sklep jest otwarty.':'Dzisiejszy ruch obsłużony.';
 $('mission-copy').textContent=packed?'Postać sama kompletuje i pakuje kolejne zamówienia. Odbierz gotowe paczki przyciskiem wysyłki.':waiting?'Zobacz, jak produkt wędruje z regału do paczki. Pakowanie odbywa się automatycznie; możesz też pomóc.':pending?'Sesje napływają na żywo. Cena, promocja i źródło ruchu decydują o zakupie. Zamówienie pojawia się w chwili zakupu, bez dodatkowego odliczania.':'Możesz teraz zamknąć dzień i przejrzeć zysk oraz koszty.';
 $('main-action').textContent=packed?'Wyślij '+packed+' paczek →':waiting?'Trwa automatyczne pakowanie…':pending?'Czekamy na zamówienie…':'Podsumuj dzień →';
-$('main-action').disabled=!packed&&(waiting>0||pending);window.refreshMobileControls?.();$('action-note').textContent='Automatyczne pakowanie: '+(game.worker?'9':'16')+' s / paczkę · wyślij przed końcem dnia; niewysłane zostaną anulowane';
+$('main-action').disabled=!packed&&(waiting>0||pending);if(packed&&game.orders.filter(o=>o.status==='shipped').length>=E.dailyCapacity(game)){ $('main-action').disabled=true;$('main-action').textContent='Limit realizacji na dziś — reszta jutro';if($('ship'))$('ship').disabled=true;}window.refreshMobileControls?.();$('action-note').textContent='Zespół: '+(1+E.staffCount(game))+' osób · '+game.packedToday+'/'+E.dailyCapacity(game)+' spakowanych dziś · zaległe przejdą na jutro';
 };
 setInterval(()=>{
 const now=performance.now(),dt=Math.min(1000,Math.max(0,now-last));last=now;
