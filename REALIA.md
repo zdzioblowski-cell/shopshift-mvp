@@ -94,3 +94,7 @@ Katalog obejmuje 15 fikcyjnych kosmetyków z cenami bazowymi 100–500 zł i kos
 
 ## Korekta narzutu 0.8.1
 Bazowy narzut wynosi 40–90% względem kosztu Bloom: (cena katalogowa − koszt zakupu) / koszt zakupu. Odpowiada to marży na sprzedaży około 28,6–47,4%, przed logistyką, reklamami, kosztami stałymi i zwrotami. Koszty bazowe: 71–264 zł, ceny katalogowe nadal 100–500 zł. Rabat hurtowy Luma −14% może podnieść narzut ponad bazowy zakres. Ceny ustawiane przez gracza i promocje zmieniają faktyczną rentowność. Zapasy i dostawy zakupione wcześniej zachowują historyczny koszt; nowe dostawy mają nowe stawki.
+
+
+### Podgląd kosztów 0.8.2
+Karty produktów oraz domyślny podgląd promocji używają aktualnej ceny wybranego dostawcy, także gdy magazyn zawiera tanie historyczne zapasy. W Promocjach można wybrać koszt historyczny zapasu, oznaczony w tabeli. Rzeczywisty wynik finansowy pozostaje oparty na cenie faktycznie kupionego towaru. ROAS mierzy przychód względem wydatków reklamowych, a nie zysk.
