@@ -36,7 +36,7 @@ Rzeczywisty ruch zmienia się losowo o około ±30%. Cenę, reputację, promocj�
 
 Nowy sklep ma około 2–5 wizyt organicznych dziennie i konwersję bazową 1,2%, więc zwykle nie otrzyma z nich zamówienia. Google zaleca ocenianie efektów SEO po tygodniach; niektóre zmiany wymagają miesięcy. W grze inwestycja SEO zaczyna wpływać na ruch po 30 dniach od poniesienia danego wydatku, a efekt jest stopniowy. Publikacje rozwijają również rozpoznawalność marki, ale zakup artykułu nie gwarantuje pozycji w wyszukiwarce.
 
-Każda kolejna sesja ocenia bieżące ceny i promocję podczas napływu ruchu. Zakwalifikowane zamówienia przychodzą co losowe 10–50 sekund; ten zegar jest kompresją czasu rozgrywki, a nie rzeczywistym czasem zakupów klientów. Ruch, który nie skonwertował, nie musi wywołać powiadomienia. Przy słabej kampanii może nie być żadnego zamówienia.
+Każda kolejna sesja ocenia bieżące ceny i promocję podczas napływu ruchu. Zakwalifikowane zamówienia przychodzą co losowe 5–15 sekund; ten zegar jest kompresją czasu rozgrywki, a nie rzeczywistym czasem zakupów klientów. Ruch, który nie skonwertował, nie musi wywołać powiadomienia. Przy słabej kampanii może nie być żadnego zamówienia.
 
 ## Promocje i raportowanie
 
@@ -65,7 +65,7 @@ Każda kolejna sesja ocenia bieżące ceny i promocję podczas napływu ruchu. Z
 
 Analityka pokazuje wyłącznie fikcyjny sklep: rzeczywiście zasymulowane sesje, oglądanie produktów, koszyki, przejścia do kasy, przyjęte zakupy i wysłaną sprzedaż według źródła. Nie instalujemy Google Analytics i nie śledzimy graczy. Każdy zakup przypisujemy źródłu jednej sesji; powroty użytkowników i wielokanałowa atrybucja nie są modelowane. Organiczne i bezpośrednie wejścia są połączone. Zakupy to przyjęte zamówienia, a przychód/ROAS dotyczą wysłanych paczek, z dopłatą za dostawę, przed późniejszymi zwrotami.
 
-Sesje napływają przez 180 sekund aktywnej gry na kampanię. Każda ocenia bieżącą cenę, promocję, reputację i jakość źródła. Rabat zwiększa prawdopodobieństwo zakupu przez niższą efektywną cenę, nie gwarantuje zysku. Kolejka zamówień jest obsługiwana co losowe 10–50 sekund; brak kupujących może wydłużyć oczekiwanie. Doładowanie w trakcie kampanii dodaje wyłącznie marginalny ruch do pozostałego czasu oraz od razu pobiera koszt mediów i prowizję agencji. Nie odtwarza już odwiedzonych sesji.
+Sesje napływają przez 180 sekund aktywnej gry na kampanię. Każda ocenia bieżącą cenę, promocję, reputację i jakość źródła. Rabat zwiększa prawdopodobieństwo zakupu przez niższą efektywną cenę, nie gwarantuje zysku. Kolejka zamówień jest obsługiwana co losowe 5–15 sekund; brak kupujących może wydłużyć oczekiwanie. Doładowanie w trakcie kampanii dodaje wyłącznie marginalny ruch do pozostałego czasu oraz od razu pobiera koszt mediów i prowizję agencji. Nie odtwarza już odwiedzonych sesji.
 
 Nasycenie (parametry scenariusza, nie realne benchmarki): Google 300 zł, Meta 250 zł, Instagram 180 zł, TikTok 150 zł, artykuły 700 zł dziennie. Do progu ruch jest proporcjonalny do budżetu; powyżej wzrost jest logarytmiczny, a jakość dodatkowego zasięgu obniża konwersję. Dzienna losowość ruchu pozostaje ±30%. Model nie gwarantuje monotonicznego ROAS w każdej pojedynczej rozgrywce, ale oczekiwany zwrot na złotówkę maleje. Prognoza zakłada pełną dostępność i realizację; limit magazynu i brak towaru mogą dodatkowo ograniczyć sprzedaż.
 
@@ -103,3 +103,7 @@ Karty produktów oraz domyślny podgląd promocji używają aktualnej ceny wybra
 ### Podatki i koszty 0.8.7
 Od 0.8.7 gra nalicza podatek według uproszczonego scenariusza 19% dodatniego wyniku po kosztach i pokryciu wcześniejszych strat. Jest pobierany przy zamknięciu dnia, pomniejsza gotówkę i zysk. Straty powstałe od wprowadzenia modelu przenosimy bez ograniczeń na kolejne dni; wcześniejsza historia nie jest przeliczana. To mechanika gry, nie kalkulator CIT: nie odwzorowuje rzeczywistych zaliczek, roku podatkowego, limitów rozliczenia strat, ulg ani różnic księgowo-podatkowych. VAT pozostaje poza modelem. Płace i materiały do pakowania były już kosztami i nie są naliczane podwójnie. Stawki CIT w rzeczywistości to zasadniczo 19% oraz 9% po spełnieniu warunków — w grze przyjmujemy jeden scenariusz 19%.
 Źródło stawek: https://www.podatki.gov.pl/podatki-firmowe/cit/cit-klasyczny/informacje-podstawowe-cit-klasyczny
+
+
+### Tempo i organik 0.8.9
+Zamówienia zakwalifikowane do kolejki pojawiają się co 5–15 sekund; przy braku konwersji oczekiwanie może być dłuższe. Ruch bezpłatny rośnie z wiekiem sklepu (do 240 dodatkowych sesji), wysłanymi zamówieniami (do 180), marką i dojrzałym SEO. Reputacja wpływa na ten wzrost, a obsłużeni klienci podnoszą bazową konwersję bezpłatnej puli. Organik obejmuje też ruch bezpośredni i powroty. Cena, promocja i marketing nadal wpływają na konwersję, a nasycenie budżetu pozostaje. Są to parametry gry, nie prognoza realnego sklepu.

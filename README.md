@@ -127,3 +127,7 @@ Od 0.8.7 gra nalicza podatek według uproszczonego scenariusza 19% dodatniego wy
 
 ### Dzień 5 minut · 0.8.8
 Od otwarcia sprzedaży odliczamy 300 sekund aktywnej gry. Koniec automatycznie rozlicza dzień i pokazuje raport, bez uruchamiania kolejnego dnia. Pauza, ukryta karta i okna dialogowe zatrzymują zegar. Ostatnie 30 sekund: ostrzeżenie. Niewysłane zamówienia są anulowane według dotychczasowych zasad zamknięcia; należy wysłać je przed terminem. Zapis zachowuje pozostały czas. Dzień rozpoczęty w starszej wersji dostaje pełne 5 minut od pierwszego wczytania aktualizacji. Adapter używa tick; advance pozostaje niskopoziomową symulacją do testów.
+
+
+### Tempo i organik 0.8.9
+Zamówienia zakwalifikowane do kolejki pojawiają się co 5–15 sekund; przy braku konwersji oczekiwanie może być dłuższe. Ruch bezpłatny rośnie z wiekiem sklepu (do 240 dodatkowych sesji), wysłanymi zamówieniami (do 180), marką i dojrzałym SEO. Reputacja wpływa na ten wzrost, a obsłużeni klienci podnoszą bazową konwersję bezpłatnej puli. Organik obejmuje też ruch bezpośredni i powroty. Cena, promocja i marketing nadal wpływają na konwersję, a nasycenie budżetu pozostaje. Są to parametry gry, nie prognoza realnego sklepu.

@@ -29,7 +29,7 @@ const CHANNELS=[
 {id:'articles',name:'Artykuły zewnętrzne',cpc:0,cvr:.045,description:'350 zł za publikację; ruch polecający i wolny rozwój marki.'}];
 const EXTRA_COSTS=['agency','packaging','payroll','software','interest','loanFees','tax'];
 function defaults(){return {budgets:{google:150,meta:0,instagram:0,tiktok:0,articles:0},agency:true,seoBudget:0,seoPoints:0,seoPending:[],seoAge:0,brand:0,promo:{type:'none',percent:10},rates:{agencyMonthly:1500,agencyPercent:10,parcel:13.5,packaging:1.8,customerDelivery:12.99,salaryGross:5500,employerPercent:20.48,softwareMonthly:299,returnHandling:6,paymentPercent:1.5,paymentFixed:1}};}
-function migrate(s){if(s.dayElapsed===undefined)s.dayElapsed=0;if(!s.tax)s.tax={loss:0};
+function migrate(s){if(!s.pacingRevision){if(s.live)s.live.nextIn=Math.min(s.live.nextIn,15000);s.pacingRevision=1;}if(s.dayElapsed===undefined)s.dayElapsed=0;if(!s.tax)s.tax={loss:0};
 if(s.catalogRevision!==2){for(let i=0;i<PRODUCTS.length;i++){if(!s.stock[i])s.stock.push({qty:0,value:0});if(s.prices[i]===undefined||s.prices[i]<100)s.prices[i]=PRODUCTS[i].price;}
 if(s.stockWatch)while(s.stockWatch.length<PRODUCTS.length)s.stockWatch.push(false);
 if(s.traffic){while(s.traffic.products.length<PRODUCTS.length)s.traffic.products.push({views:0,carts:0});for(const source of s.traffic.sources){const channel=CHANNELS.find(c=>c.id===source.id);if(channel)source.cvr=channel.cvr;}}
@@ -54,7 +54,7 @@ function unitEconomics(s,index,units=1){const o=offer(s,index,units),st=s.stock[
 const empty=()=>({sales:0,cogs:0,shipping:0,fees:0,ads:0,fixed:0,refunds:0,returnFees:0,setup:0,agency:0,packaging:0,payroll:0,software:0,interest:0,loanFees:0,tax:0});
 const profit=l=>l.sales-l.cogs-l.shipping-l.fees-l.ads-l.fixed-l.refunds-l.returnFees-l.setup-(l.agency||0)-(l.packaging||0)-(l.payroll||0)-(l.software||0)-(l.interest||0)-(l.loanFees||0)-(l.tax||0);
 const round=n=>Math.round((n+Number.EPSILON)*100)/100;
-function create(seed=18371){return {version:1,dayElapsed:0,tax:{loss:0},catalogRevision:2,stockWatch:PRODUCTS.map(()=>false),credit:{loan:null,borrowed:0,repaid:0},business:defaults(),seed,day:1,phase:'plan',cash:10000,level:0,rating:4.6,ratingCount:5,stock:PRODUCTS.map(()=>({qty:0,value:0})),prices:PRODUCTS.map(p=>p.price),deliveries:[],orders:[],returns:[],reviews:[],history:[],ledger:empty(),total:empty(),campaign:1,freeShipping:false,worker:false,shipped:0,packedToday:0,visits:0,lost:0,nextId:1001,tutorial:0,log:['Witaj w swoim pierwszym sklepie. Kup towar, ustaw ceny i otwórz dzień.']};}
+function create(seed=18371){return {version:1,pacingRevision:1,dayElapsed:0,tax:{loss:0},catalogRevision:2,stockWatch:PRODUCTS.map(()=>false),credit:{loan:null,borrowed:0,repaid:0},business:defaults(),seed,day:1,phase:'plan',cash:10000,level:0,rating:4.6,ratingCount:5,stock:PRODUCTS.map(()=>({qty:0,value:0})),prices:PRODUCTS.map(p=>p.price),deliveries:[],orders:[],returns:[],reviews:[],history:[],ledger:empty(),total:empty(),campaign:1,freeShipping:false,worker:false,shipped:0,packedToday:0,visits:0,lost:0,nextId:1001,tutorial:0,log:['Witaj w swoim pierwszym sklepie. Kup towar, ustaw ceny i otwórz dzień.']};}
 function rng(s){s.seed=(Math.imul(s.seed,1664525)+1013904223)>>>0;return s.seed/4294967296;}
 function log(s,msg){s.log.unshift(msg);s.log=s.log.slice(0,12);}
 function entry(s,key,n){n=round(n);s.ledger[key]=round((s.ledger[key]||0)+n);s.total[key]=round((s.total[key]||0)+n);}
@@ -78,9 +78,9 @@ if(s.phase!=='plan')throw Error('Dzień jest już otwarty.');migrate(s);const b=
 if(upfront>0&&s.cash<upfront)throw Error('Brak gotówki na reklamę i prowizję agencji. Zmniejsz budżety.');
 s.cash=round(s.cash-upfront);entry(s,'ads',costs.ads);entry(s,'agency',costs.agencyVariable);b.dayCosts=costs;s.phase='fulfill';s.dayElapsed=0;s.orders=[];s.lost=0;s.packedToday=0;s.visits=0;
 b.channelStats=[];
-const organic=Math.round(2+rng(s)*3+Math.min(100,b.brand*.4)+(b.seoAge>=30?Math.min(250,b.seoPoints*.025):0));
+const growth=organicGrowth(s),organic=Math.round(2+rng(s)*3+growth.extra);
 s.traffic={elapsed:0,duration:180000,nextIn:1000,sources:[],products:PRODUCTS.map(()=>({views:0,carts:0})),minutes:[]};
-addSource(s,'organic',0,organic,.012,1,1);
+addSource(s,'organic',0,organic,growth.cvr,1,1);
 for(const c of CHANNELS){const budget=b.budgets[c.id];if(!budget)continue;const variation=.7+rng(s)*.6,overlap=c.id==='instagram'&&b.budgets.meta>0?.85:1;addSource(s,c.id,budget,Math.round(reach(c.id,budget)*variation*overlap),c.cvr,variation,overlap);}
 s.live={queue:[],nextIn:0,job:null};s.tutorial=Math.max(s.tutorial,3);
 log(s,'Sklep otwarty. Ruch napływa przez 3 minuty aktywnej gry; ceny i promocje wpływają na kolejnych odwiedzających.');
@@ -107,7 +107,8 @@ if(!live.queue.length)live.nextIn=delay(s);live.queue.push({...o,liveOffer:true,
 t.nextIn=t.elapsed<t.duration?1000:0;
 }
 
-function delay(s){return 10000+Math.floor(rng(s)*40001);}
+function organicGrowth(s){const b=config(s),reputation=Math.max(.4,Math.min(1.1,s.rating/4.6)),age=Math.min(240,Math.max(0,s.day-1)*6),returning=Math.min(180,s.shipped*.8),brand=Math.min(100,b.brand*.4),seo=b.seoAge>=30?Math.min(250,b.seoPoints*.025):0;return {age,returning,brand,seo,extra:(age+returning+brand)*reputation+seo,cvr:.012+Math.min(.023,s.shipped*.0003)};}
+function delay(s){return 5000+Math.floor(rng(s)*10001);}
 function ensureLive(s){if(!s.live)s.live={queue:[],nextIn:0,job:null};return s.live;}
 function packingDuration(s){return s.worker?9000:16000;}
 const DAY_DURATION=300000;
@@ -168,7 +169,7 @@ const trafficOK=t=>t===undefined||!!(t&&num(t.elapsed,0,180000)&&t.duration===18
 const creditOK=c=>c===undefined||!!(c&&num(c.borrowed)&&num(c.repaid)&&c.repaid<=c.borrowed&&(c.loan===null||c.loan&&integer(c.loan.initial,1000,15000)&&[3,6,12].includes(c.loan.months)&&num(c.loan.principal,0,c.loan.initial)&&c.loan.rate===12&&num(c.loan.fee)&&num(c.loan.capitalRate,0,c.loan.initial)&&integer(c.loan.nextDue,1)&&integer(c.loan.started,1)&&integer(c.loan.installments,0,c.loan.months)&&num(c.loan.accrued)&&num(c.loan.interestDue)&&num(c.loan.principalDue,0,c.loan.principal)&&num(c.loan.interestPaid)));
 return !!(s&&(s.dayElapsed===undefined||num(s.dayElapsed,0,300000))&&(s.tax===undefined||s.tax&&num(s.tax.loss))&&Array.isArray(s.stock)&&(s.catalogRevision!==2||s.stock.length===PRODUCTS.length)&&(s.traffic===undefined||s.traffic?.products?.length===s.stock.length)&&(s.stockWatch===undefined||s.stockWatch?.length===s.stock.length)&&creditOK(s.credit)&&(s.stockWatch===undefined||arr(s.stockWatch,PRODUCTS.length)&&[6,PRODUCTS.length].includes(s.stockWatch.length)&&s.stockWatch.every(x=>typeof x==='boolean'))&&trafficOK(s.traffic)&&liveOK(s)&&businessOK(s.business)&&s.version===1&&integer(s.day,1)&&['plan','fulfill','report'].includes(s.phase)&&num(s.cash,-1e12)&&integer(s.level,0,2)&&integer(s.seed,0,4294967295)&&num(s.rating,1,5)&&integer(s.ratingCount,1)&&integer(s.shipped)&&integer(s.packedToday)&&integer(s.visits)&&integer(s.lost)&&integer(s.nextId,1001)&&integer(s.tutorial,0,5)&&typeof s.freeShipping==='boolean'&&typeof s.worker==='boolean'&&integer(s.campaign,0,3)&&arr(s.stock,PRODUCTS.length)&&[6,PRODUCTS.length].includes(s.stock.length)&&s.stock.every(x=>x&&integer(x.qty,0,1200)&&num(x.value))&&arr(s.prices,PRODUCTS.length)&&[6,PRODUCTS.length].includes(s.prices.length)&&s.prices.length===s.stock.length&&s.prices.every(x=>num(x,5,500))&&arr(s.orders,160)&&s.orders.every(orderOK)&&arr(s.deliveries,240)&&s.deliveries.every(d=>d&&integer(d.index,0,s.stock.length-1)&&integer(d.qty,1,1200)&&num(d.value)&&(d.remainingMs!==undefined?num(d.remainingMs,0,300000):integer(d.due,1)))&&arr(s.returns,320)&&s.returns.every(o=>orderOK(o)&&integer(o.due,1)&&num(o.sales))&&arr(s.reviews,25)&&s.reviews.every(r=>r&&integer(r.day,1)&&integer(r.stars,1,5)&&typeof r.text==='string'&&r.text.length<=1000)&&arr(s.log,12)&&s.log.every(x=>typeof x==='string'&&x.length<2000)&&arr(s.history,100000)&&s.history.every(h=>entryOK(h)&&integer(h.day,1)&&num(h.profit,-1e12)&&integer(h.orders)&&integer(h.visits)&&(h.channels===undefined||businessOK({...defaults(),channelStats:h.channels})))&&entryOK(s.ledger)&&entryOK(s.total));
 }
-return {DAY_DURATION,tick,CREDIT,debt,creditLimit,loanQuote,borrow,payDue,settleDue,payoffQuote,repay,lowStock,reach,audience,conversion,boost,hasDemand,KNEES,PRODUCTS,LEVELS,CAMPAIGNS,CHANNELS,defaults,migrate,config,settings,spend,dayCosts,offer,purchaseEconomics,unitEconomics,qty,create,profit,round,used,buy,price,open,advance,ensureLive,packingDuration,pack,ship,close,next,upgrade,hire,validate};
+return {organicGrowth,DAY_DURATION,tick,CREDIT,debt,creditLimit,loanQuote,borrow,payDue,settleDue,payoffQuote,repay,lowStock,reach,audience,conversion,boost,hasDemand,KNEES,PRODUCTS,LEVELS,CAMPAIGNS,CHANNELS,defaults,migrate,config,settings,spend,dayCosts,offer,purchaseEconomics,unitEconomics,qty,create,profit,round,used,buy,price,open,advance,ensureLive,packingDuration,pack,ship,close,next,upgrade,hire,validate};
 });
 
 
