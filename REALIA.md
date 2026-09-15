@@ -98,3 +98,8 @@ Bazowy narzut wynosi 40–60% względem kosztu Bloom: (cena katalogowa − koszt
 
 ### Podgląd kosztów 0.8.2
 Karty produktów oraz domyślny podgląd promocji używają aktualnej ceny wybranego dostawcy, także gdy magazyn zawiera tanie historyczne zapasy. W Promocjach można wybrać koszt historyczny zapasu, oznaczony w tabeli. Rzeczywisty wynik finansowy pozostaje oparty na cenie faktycznie kupionego towaru. ROAS mierzy przychód względem wydatków reklamowych, a nie zysk.
+
+
+### Podatki i koszty 0.8.7
+Od 0.8.7 gra nalicza podatek według uproszczonego scenariusza 19% dodatniego wyniku po kosztach i pokryciu wcześniejszych strat. Jest pobierany przy zamknięciu dnia, pomniejsza gotówkę i zysk. Straty powstałe od wprowadzenia modelu przenosimy bez ograniczeń na kolejne dni; wcześniejsza historia nie jest przeliczana. To mechanika gry, nie kalkulator CIT: nie odwzorowuje rzeczywistych zaliczek, roku podatkowego, limitów rozliczenia strat, ulg ani różnic księgowo-podatkowych. VAT pozostaje poza modelem. Płace i materiały do pakowania były już kosztami i nie są naliczane podwójnie. Stawki CIT w rzeczywistości to zasadniczo 19% oraz 9% po spełnieniu warunków — w grze przyjmujemy jeden scenariusz 19%.
+Źródło stawek: https://www.podatki.gov.pl/podatki-firmowe/cit/cit-klasyczny/informacje-podstawowe-cit-klasyczny
