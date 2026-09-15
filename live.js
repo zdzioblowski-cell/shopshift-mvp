@@ -1,7 +1,7 @@
 /* Real-time adapter: foreground simulation only; no offline bursts. */
 (function(){
-let paused=false,last=performance.now(),sinceSave=0,observedGame=game,noticeTimer,context=null;
-const strip=document.createElement('div');strip.id='live-strip';strip.innerHTML='<span class="live-dot"></span><strong id="live-state">Sklep zamknięty</strong><span id="arrival-clock"></span><button id="pause-live" class="small" aria-pressed="false">Ⅱ Pauza</button>';
+let paused=false,last=performance.now(),sinceSave=0,observedGame=game,noticeTimer,context=null,warnedDay=null;
+const strip=document.createElement('div');strip.id='live-strip';strip.innerHTML='<span class="live-dot"></span><strong id="live-state">Sklep zamknięty</strong><span id="arrival-clock"></span><strong id="day-clock"></strong><button id="pause-live" class="small" aria-pressed="false">Ⅱ Pauza</button>';
 document.querySelector('.game-grid').before(strip);
 const notice=document.createElement('button');notice.id='order-notice';notice.type='button';notice.setAttribute('role','status');notice.setAttribute('aria-live','polite');document.body.append(notice);
 notice.addEventListener('click',()=>{go('orders');notice.classList.remove('show');document.querySelector('.operations').scrollIntoView({behavior:'smooth',block:'start'});});
@@ -16,6 +16,9 @@ function arrivalNotice(o){notice.innerHTML='<span class="notice-icon">▣</span>
 window.refreshLiveUI=function(){
 window.refreshStockAlerts?.();
 window.refreshCampaignPulse?.();
+const seconds=Math.max(0,Math.ceil((E.DAY_DURATION-(game.dayElapsed||0))/1000));$('day-clock').hidden=game.phase!=='fulfill';$('day-clock').textContent='Koniec dnia za '+Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0');$('day-clock').classList.toggle('deadline-soon',seconds<=30);
+if(game.phase==='fulfill'&&seconds<=30&&warnedDay!==game.day){warnedDay=game.day;toast('Ostatnie 30 sekund! Wyślij paczki przed końcem dnia. Niewysłane zamówienia zostaną anulowane.');}
+
 const active=game.phase==='fulfill',live=active?E.ensureLive(game):null,stopped=paused||document.hidden||$('dialog').open;
 const incoming=game.deliveries.filter(d=>d.remainingMs!==undefined);strip.hidden=!active&&!incoming.length;document.querySelectorAll('[data-delivery-clock]').forEach((el,i)=>{if(incoming[i])el.textContent=Math.ceil(incoming[i].remainingMs/1000)+' s';});$('pause-live').setAttribute('aria-pressed',String(paused));$('pause-live').textContent=paused?'▶ Wznów':'Ⅱ Pauza';Warehouse.setPaused?.(active?stopped:(document.hidden||$('dialog').open));
 if(!active){$('main-action').disabled=false;window.refreshJourney?.();window.refreshMobileControls?.();$('live-state').textContent=stopped?'Pauza':'Dostawy w drodze';$('arrival-clock').textContent=incoming.length?'Najbliższa dostawa za '+Math.ceil(Math.min(...incoming.map(d=>d.remainingMs))/1000)+' s':'';strip.classList.toggle('is-paused',stopped);return;}
@@ -31,13 +34,13 @@ $('scene-status').textContent=packed?packed+' paczek gotowych dla kuriera':job?o
 $('mission-title').textContent=packed?'Paczki gotowe do drogi.':waiting?'Magazyn pracuje.':pending?'Sklep jest otwarty.':'Dzisiejszy ruch obsłużony.';
 $('mission-copy').textContent=packed?'Postać sama kompletuje i pakuje kolejne zamówienia. Odbierz gotowe paczki przyciskiem wysyłki.':waiting?'Zobacz, jak produkt wędruje z regału do paczki. Pakowanie odbywa się automatycznie; możesz też pomóc.':pending?'Sesje napływają na żywo. Cena, promocja i źródło ruchu decydują o zakupie. Zamówienia z kolejki pojawiają się co 10–50 sekund; brak konwersji wydłuża oczekiwanie.':'Możesz teraz zamknąć dzień i przejrzeć zysk oraz koszty.';
 $('main-action').textContent=packed?'Wyślij '+packed+' paczek →':waiting?'Trwa automatyczne pakowanie…':pending?'Czekamy na zamówienie…':'Podsumuj dzień →';
-$('main-action').disabled=!packed&&(waiting>0||pending);window.refreshMobileControls?.();$('action-note').textContent='Automatyczne pakowanie: '+(game.worker?'9':'16')+' s / paczkę · wysyłka na Twoje polecenie';
+$('main-action').disabled=!packed&&(waiting>0||pending);window.refreshMobileControls?.();$('action-note').textContent='Automatyczne pakowanie: '+(game.worker?'9':'16')+' s / paczkę · wyślij przed końcem dnia; niewysłane zostaną anulowane';
 };
 setInterval(()=>{
 const now=performance.now(),dt=Math.min(1000,Math.max(0,now-last));last=now;
-if(observedGame!==game){observedGame=game;paused=false;sinceSave=0;notice.classList.remove('show');}
+if(observedGame!==game){observedGame=game;warnedDay=null;paused=false;sinceSave=0;notice.classList.remove('show');}
 const active=(game.phase==='fulfill'||game.deliveries.length>0)&&!paused&&!document.hidden&&!$('dialog').open;
-if(active){const events=E.advance(game,dt);sinceSave+=dt;if(events.length){if(events.some(e=>e.type!=='traffic')||(tab==='analytics'&&!document.activeElement?.matches('input,select')))render();for(const event of events){if(event.type==='order')arrivalNotice(event.order);else if(event.type!=='traffic'){Warehouse.pulse();if(event.type==='delivery')toast('Dostawa dotarła: '+event.delivery.qty+' × '+E.PRODUCTS[event.delivery.index].name+'.');}}save();sinceSave=0;}else if(sinceSave>=2000){save();sinceSave=0;}}
+if(active){const events=E.tick(game,dt);sinceSave+=dt;if(events.length){if(events.some(e=>e.type!=='traffic')||(tab==='analytics'&&!document.activeElement?.matches('input,select')))render();for(const event of events){if(event.type==='day-ended'){notice.classList.remove('show');clearTimeout(noticeTimer);tab='finance';render();showReport();}else if(event.type==='order'&&game.phase==='fulfill')arrivalNotice(event.order);else if(event.type!=='traffic'){Warehouse.pulse();if(event.type==='delivery')toast('Dostawa dotarła: '+event.delivery.qty+' × '+E.PRODUCTS[event.delivery.index].name+'.');}}save();sinceSave=0;}else if(sinceSave>=2000){save();sinceSave=0;}}
 refreshLiveUI();
 },100);
 document.addEventListener('visibilitychange',()=>{last=performance.now();save();refreshLiveUI();});

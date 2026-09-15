@@ -123,3 +123,7 @@ Dzisiaj vs wczoraj, poprzedni dzień vs dzień wcześniejszy oraz ostatnie 7 dni
 ### Podatki i koszty 0.8.7
 Od 0.8.7 gra nalicza podatek według uproszczonego scenariusza 19% dodatniego wyniku po kosztach i pokryciu wcześniejszych strat. Jest pobierany przy zamknięciu dnia, pomniejsza gotówkę i zysk. Straty powstałe od wprowadzenia modelu przenosimy bez ograniczeń na kolejne dni; wcześniejsza historia nie jest przeliczana. To mechanika gry, nie kalkulator CIT: nie odwzorowuje rzeczywistych zaliczek, roku podatkowego, limitów rozliczenia strat, ulg ani różnic księgowo-podatkowych. VAT pozostaje poza modelem. Płace i materiały do pakowania były już kosztami i nie są naliczane podwójnie. Stawki CIT w rzeczywistości to zasadniczo 19% oraz 9% po spełnieniu warunków — w grze przyjmujemy jeden scenariusz 19%.
 Źródło stawek: https://www.podatki.gov.pl/podatki-firmowe/cit/cit-klasyczny/informacje-podstawowe-cit-klasyczny
+
+
+### Dzień 5 minut · 0.8.8
+Od otwarcia sprzedaży odliczamy 300 sekund aktywnej gry. Koniec automatycznie rozlicza dzień i pokazuje raport, bez uruchamiania kolejnego dnia. Pauza, ukryta karta i okna dialogowe zatrzymują zegar. Ostatnie 30 sekund: ostrzeżenie. Niewysłane zamówienia są anulowane według dotychczasowych zasad zamknięcia; należy wysłać je przed terminem. Zapis zachowuje pozostały czas. Dzień rozpoczęty w starszej wersji dostaje pełne 5 minut od pierwszego wczytania aktualizacji. Adapter używa tick; advance pozostaje niskopoziomową symulacją do testów.
