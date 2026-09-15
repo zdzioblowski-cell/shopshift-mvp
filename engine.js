@@ -6,17 +6,17 @@ const PRODUCTS=[
 {id:'cream',name:'Cloud Nine',kind:'Krem do twarzy',cost:99,price:149,color:'#c1c1c1',shape:'jar'},
 {id:'cleanser',name:'Fresh Start',kind:'Żel oczyszczający',cost:75,price:109,color:'#bababa',shape:'pump'},
 {id:'mist',name:'Soft Rain',kind:'Mgiełka do twarzy',cost:71,price:100,color:'#b3b3b3',shape:'spray'},
-{id:'mask',name:'Sunday Reset',kind:'Maska regenerująca',cost:137,price:219,color:'#de939d',shape:'jar'},
-{id:'oil',name:'Golden Hour',kind:'Olejek do twarzy',cost:155,price:279,color:'#c4c4c4',shape:'dropper'},
-{id:'night',name:'Midnight Repair',kind:'Krem nocny z ceramidami',cost:199,price:329,color:'#9c8aac',shape:'jar'},
-{id:'eyes',name:'Bright Eyes',kind:'Serum pod oczy',cost:146,price:249,color:'#d2b8a5',shape:'dropper'},
+{id:'mask',name:'Sunday Reset',kind:'Maska regenerująca',cost:146,price:219,color:'#de939d',shape:'jar'},
+{id:'oil',name:'Golden Hour',kind:'Olejek do twarzy',cost:180,price:279,color:'#c4c4c4',shape:'dropper'},
+{id:'night',name:'Midnight Repair',kind:'Krem nocny z ceramidami',cost:215,price:329,color:'#9c8aac',shape:'jar'},
+{id:'eyes',name:'Bright Eyes',kind:'Serum pod oczy',cost:163,price:249,color:'#d2b8a5',shape:'dropper'},
 {id:'spf',name:'City Shield',kind:'Krem ochronny SPF 50',cost:119,price:169,color:'#dad4c8',shape:'pump'},
-{id:'peel',name:'Velvet Peel',kind:'Peeling enzymatyczny',cost:121,price:199,color:'#c78b98',shape:'jar'},
-{id:'retinal',name:'After Dark',kind:'Serum z retinalem',cost:211,price:379,color:'#8c829b',shape:'dropper'},
+{id:'peel',name:'Velvet Peel',kind:'Peeling enzymatyczny',cost:130,price:199,color:'#c78b98',shape:'jar'},
+{id:'retinal',name:'After Dark',kind:'Serum z retinalem',cost:245,price:379,color:'#8c829b',shape:'dropper'},
 {id:'body',name:'Body Ritual',kind:'Balsam do ciała',cost:153,price:229,color:'#bbaaa0',shape:'pump'},
-{id:'hair',name:'Silk Therapy',kind:'Olejek do włosów',cost:157,price:259,color:'#b6a77c',shape:'dropper'},
-{id:'elixir',name:'Lumière Elixir',kind:'Koncentrat peptydowy',cost:243,price:449,color:'#a99c85',shape:'dropper'},
-{id:'signature',name:'Signature 500',kind:'Krem luksusowy',cost:264,price:500,color:'#777782',shape:'jar'}];
+{id:'hair',name:'Silk Therapy',kind:'Olejek do włosów',cost:168,price:259,color:'#b6a77c',shape:'dropper'},
+{id:'elixir',name:'Lumière Elixir',kind:'Koncentrat peptydowy',cost:285,price:449,color:'#a99c85',shape:'dropper'},
+{id:'signature',name:'Signature 500',kind:'Krem luksusowy',cost:313,price:500,color:'#777782',shape:'jar'}];
 const LEVELS=[{name:'Domowe studio',size:'24 m²',capacity:150,rent:35,limit:25,upgrade:0},{name:'Pracownia marki',size:'70 m²',capacity:450,rent:85,limit:65,upgrade:2400},{name:'Centrum wysyłek',size:'180 m²',capacity:1200,rent:170,limit:160,upgrade:6000}];
 const CAMPAIGNS=[{name:'Ruch organiczny',cost:0,visits:24},{name:'Social starter',cost:60,visits:95},{name:'Beauty creators',cost:180,visits:220},{name:'Pełna kampania',cost:480,visits:430}];
 
@@ -110,10 +110,11 @@ t.nextIn=t.elapsed<t.duration?1000:0;
 function delay(s){return 10000+Math.floor(rng(s)*40001);}
 function ensureLive(s){if(!s.live)s.live={queue:[],nextIn:0,job:null};return s.live;}
 function packingDuration(s){return s.worker?9000:16000;}
-function advance(s,ms){
+function advance(s,ms,autoFulfill=false){
 if(!Number.isFinite(ms)||ms<0||ms>3600000)throw Error('Nieprawidłowy krok czasu.');
 const active=s.phase==='fulfill',live=active?ensureLive(s):{queue:[],nextIn:0,job:null},events=[];
 function assign(){if(!active)return;if(live.job&&!s.orders.some(o=>o.id===live.job.id&&o.status==='new'))live.job=null;if(!live.job){const o=s.orders.find(o=>o.status==='new');if(o)live.job={id:o.id,elapsed:0};}}
+if(active&&autoFulfill&&s.orders.some(o=>o.status==='packed'))events.push({type:'shipped',count:ship(s)});
 assign();
 while(ms>0){
 const arrival=live.queue.length?live.nextIn:Infinity,packing=live.job?packingDuration(s)-live.job.elapsed:Infinity;
@@ -125,7 +126,7 @@ const planned=live.queue.shift(),st=s.stock[planned.index];if(planned.liveOffer)
 if(st.qty>=qty(planned)){const cost=round(st.value/st.qty*qty(planned));st.qty-=qty(planned);st.value=st.qty?round(st.value-cost):0;const order={...planned,id:s.nextId++,cost,status:'new'};s.orders.push(order);const channel=s.business?.channelStats?.find(c=>c.id===order.channel);if(channel){channel.accepted++;channel.orderedValue=round((channel.orderedValue||0)+order.price+(order.deliveryCharge||0));}if(s.traffic){const m=Math.min(2,Math.max(0,Math.floor((s.traffic.elapsed-1)/60000)));if(s.traffic.minutes[m])s.traffic.minutes[m].orders++;}events.push({type:'order',order});log(s,'Nowe zamówienie #'+order.id+' · '+PRODUCTS[order.index].name+'.');}else s.lost++;
 live.nextIn=live.queue.length?delay(s):0;
 }
-if(live.job&&live.job.elapsed>=packingDuration(s)){const id=live.job.id;pack(s,id);events.push({type:'packed',id});live.job=null;}
+if(live.job&&live.job.elapsed>=packingDuration(s)){const id=live.job.id;pack(s,id);events.push({type:'packed',id});if(autoFulfill)events.push({type:'shipped',count:ship(s)});live.job=null;}
 assign();if(!hasDemand(s)&&!live.job&&!s.deliveries.some(d=>d.remainingMs!==undefined))break;
 }
 return events;

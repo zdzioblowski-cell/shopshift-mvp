@@ -29,15 +29,15 @@ const operation=job?(progress<.32?'Idzie po produkt':progress<.52?'Przenosi prod
 $('packing-status').textContent=stopped?'Praca wstrzymana':operation+(job?' #'+job.id:'')+' · '+game.packedToday+' spakowanych';
 $('scene-status').textContent=packed?packed+' paczek gotowych dla kuriera':job?operation:pending?'Czekamy na kolejnego klienta':'Realizacja zamówień zakończona';
 $('mission-title').textContent=packed?'Paczki gotowe do drogi.':waiting?'Magazyn pracuje.':pending?'Sklep jest otwarty.':'Dzisiejszy ruch obsłużony.';
-$('mission-copy').textContent=packed?'Postać sama kompletuje i pakuje kolejne zamówienia. Odbierz gotowe paczki przyciskiem wysyłki.':waiting?'Zobacz, jak produkt wędruje z regału do paczki. Pakowanie odbywa się automatycznie; możesz też pomóc.':pending?'Sesje napływają na żywo. Cena, promocja i źródło ruchu decydują o zakupie. Zamówienia z kolejki pojawiają się co 10–50 sekund; brak konwersji wydłuża oczekiwanie.':'Możesz teraz zamknąć dzień i przejrzeć zysk oraz koszty.';
-$('main-action').textContent=packed?'Wyślij '+packed+' paczek →':waiting?'Trwa automatyczne pakowanie…':pending?'Czekamy na zamówienie…':'Podsumuj dzień →';
-$('main-action').disabled=!packed&&(waiting>0||pending);window.refreshMobileControls?.();$('action-note').textContent='Automatyczne pakowanie: '+(game.worker?'9':'16')+' s / paczkę · wysyłka na Twoje polecenie';
+$('mission-copy').textContent=packed?'Magazyn automatycznie pakuje i wysyła zamówienia.':waiting?'Zobacz, jak produkt wędruje z regału do paczki. Pakowanie i wysyłka odbywają się automatycznie. Ty zarządzasz cenami, marketingiem i kosztami.':pending?'Sesje napływają na żywo. Cena, promocja i źródło ruchu decydują o zakupie. Zamówienia z kolejki pojawiają się co 10–50 sekund; brak konwersji wydłuża oczekiwanie.':'Możesz teraz zamknąć dzień i przejrzeć zysk oraz koszty.';
+$('main-action').textContent=(pending||waiting||packed)?'Sprawdź wynik i koszty →':'Podsumuj dzień →';
+$('main-action').disabled=false;window.refreshMobileControls?.();$('action-note').textContent='Automatyczne pakowanie: '+(game.worker?'9':'16')+' s / paczkę · wysyłka automatyczna';
 };
 setInterval(()=>{
 const now=performance.now(),dt=Math.min(1000,Math.max(0,now-last));last=now;
 if(observedGame!==game){observedGame=game;paused=false;sinceSave=0;notice.classList.remove('show');}
 const active=(game.phase==='fulfill'||game.deliveries.length>0)&&!paused&&!document.hidden&&!$('dialog').open;
-if(active){const events=E.advance(game,dt);sinceSave+=dt;if(events.length){if(events.some(e=>e.type!=='traffic')||(tab==='analytics'&&!document.activeElement?.matches('input,select')))render();for(const event of events){if(event.type==='order')arrivalNotice(event.order);else if(event.type!=='traffic'){Warehouse.pulse();if(event.type==='delivery')toast('Dostawa dotarła: '+event.delivery.qty+' × '+E.PRODUCTS[event.delivery.index].name+'.');}}save();sinceSave=0;}else if(sinceSave>=2000){save();sinceSave=0;}}
+if(active){const events=E.advance(game,dt,true);sinceSave+=dt;if(events.length){if(events.some(e=>e.type!=='traffic')||(tab==='analytics'&&!document.activeElement?.matches('input,select')))render();for(const event of events){if(event.type==='order')arrivalNotice(event.order);else if(event.type!=='traffic'){Warehouse.pulse();if(event.type==='shipped')toast('Automatycznie wysłano '+event.count+' paczkę.');if(event.type==='delivery')toast('Dostawa dotarła: '+event.delivery.qty+' × '+E.PRODUCTS[event.delivery.index].name+'.');}}save();sinceSave=0;}else if(sinceSave>=2000){save();sinceSave=0;}}
 refreshLiveUI();
 },100);
 document.addEventListener('visibilitychange',()=>{last=performance.now();save();refreshLiveUI();});

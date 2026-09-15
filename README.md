@@ -97,7 +97,7 @@ Nowy start przetestujesz po wyeksportowaniu dotychczasowego zapisu i wybraniu Op
 
 
 ### Zmiany 0.8.1
-Bazowy narzut wynosi 40–90% względem kosztu Bloom: (cena katalogowa − koszt zakupu) / koszt zakupu. Odpowiada to marży na sprzedaży około 28,6–47,4%, przed logistyką, reklamami, kosztami stałymi i zwrotami. Koszty bazowe: 71–264 zł, ceny katalogowe nadal 100–500 zł. Rabat hurtowy Luma −14% może podnieść narzut ponad bazowy zakres. Ceny ustawiane przez gracza i promocje zmieniają faktyczną rentowność. Zapasy i dostawy zakupione wcześniej zachowują historyczny koszt; nowe dostawy mają nowe stawki.
+Bazowy narzut wynosi 40–60% względem kosztu Bloom: (cena katalogowa − koszt zakupu) / koszt zakupu. Odpowiada to marży na sprzedaży około 28,6–37,5%, przed logistyką, reklamami, kosztami stałymi i zwrotami. Koszty bazowe: 71–313 zł, ceny katalogowe nadal 100–500 zł. Rabat hurtowy Luma −14% może podnieść narzut ponad bazowy zakres. Ceny ustawiane przez gracza i promocje zmieniają faktyczną rentowność. Zapasy i dostawy zakupione wcześniej zachowują historyczny koszt; nowe dostawy mają nowe stawki.
 
 
 ### Podgląd kosztów 0.8.2
@@ -106,3 +106,7 @@ Karty produktów oraz domyślny podgląd promocji używają aktualnej ceny wybra
 
 ### Wcześniejsza spłata 0.8.3
 W Finansowaniu znajduje się wyróżniona sekcja wcześniejszej spłaty całego kredytu. Rozliczenie pokazuje kapitał, naliczone odsetki, prowizję i gotówkę po spłacie. Brak środków i blokada w rozliczonym dniu mają czytelne wyjaśnienie. Dostęp również przez przycisk w Finansach.
+
+
+### Zarządzanie firmą 0.8.4
+Bazowy narzut 40–60%. Aktywna gra automatycznie pakuje i wysyła; usunięto obowiązek ręcznej obsługi paczek. Główny przycisk podczas sprzedaży prowadzi do wyniku i kosztów. Zapisane spakowane zamówienia są automatycznie wysyłane po wznowieniu. Adapter czasu wywołuje advance z autoFulfill=true; tryb domyślny silnika pozostaje dostępny do symulowania oddzielnych etapów w testach.
