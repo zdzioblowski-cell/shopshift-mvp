@@ -110,3 +110,7 @@ W Finansowaniu znajduje się wyróżniona sekcja wcześniejszej spłaty całego 
 
 ### Zarządzanie firmą 0.8.4
 Bazowy narzut 40–60%. Aktywna gra automatycznie pakuje i wysyła; usunięto obowiązek ręcznej obsługi paczek. Główny przycisk podczas sprzedaży prowadzi do wyniku i kosztów. Zapisane spakowane zamówienia są automatycznie wysyłane po wznowieniu. Adapter czasu wywołuje advance z autoFulfill=true; tryb domyślny silnika pozostaje dostępny do symulowania oddzielnych etapów w testach.
+
+
+### Sterowanie i komunikaty 0.8.5
+Przywrócono ręczne pakowanie/pomoc oraz wysyłkę przyciskiem; automatyczne pakowanie przez postać pozostaje. Aktywna gra nie zleca już automatycznej wysyłki. Narzut bazowy pozostaje 40–60%. Powiadomienia w otwartym oknie są wyświetlane wewnątrz niego, nad przyciemnieniem tła; po zamknięciu wracają na dół ekranu.
