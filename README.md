@@ -135,3 +135,7 @@ Zamówienia zakwalifikowane do kolejki pojawiają się co 5–15 sekund; przy br
 
 ### Zapasy i pełny dzień ruchu 0.8.10
 Alerty zapasów są domyślnie zwinięte do licznika; lista zachowuje rozwinięcie podczas aktualizacji i ma własne przewijanie. Nowe plany kampanii rozkładają opłacone wizyty na całe 5 minut dnia, bez zwiększania budżetu ani liczby opłaconych wizyt. Analityka pokazuje 5 minut. Trwające zapisy ze starym trzyminutowym planem zachowują jego wartości; nowy czas ruchu obowiązuje od kolejnego otwarcia dnia.
+
+
+### Historia sprzedaży 0.8.11
+Finanse i Analityka: tabela dni oraz porównanie dowolnych dwóch zakończonych dni. Zamówienia wysłane, sztuki, ASP (przychód produktów po rabacie / sztuki, bez dostawy), AOV (cała wpłata / wysłane zamówienia), marketing, promocje wysłanych koszyków i rentowność netto. Starsze zapisy zachowują zamówienia i AOV; brakujących sztuk, ASP i promocji nie odtwarzamy z domysłów. Nowe raporty zapisują je trwale.
