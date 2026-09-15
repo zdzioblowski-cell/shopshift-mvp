@@ -24,7 +24,7 @@ const incoming=game.deliveries.filter(d=>d.remainingMs!==undefined);strip.hidden
 if(!active){$('main-action').disabled=false;window.refreshJourney?.();window.refreshMobileControls?.();$('live-state').textContent=stopped?'Pauza':'Dostawy w drodze';$('arrival-clock').textContent=incoming.length?'Najbliższa dostawa za '+Math.ceil(Math.min(...incoming.map(d=>d.remainingMs))/1000)+' s':'';strip.classList.toggle('is-paused',stopped);return;}
 const pending=E.hasDemand(game);const waiting=game.orders.filter(o=>o.status==='new').length,packed=game.orders.filter(o=>o.status==='packed').length;
 $('live-state').textContent=stopped?'Pauza':pending?'Sklep działa na żywo':'Ruch dzisiejszej kampanii zakończony';strip.classList.toggle('is-paused',stopped);
-$('arrival-clock').textContent=live.queue.length?'Nowe zamówienie za około '+Math.ceil(live.nextIn/1000)+' s · kolejne odstępy 5–15 s':pending?'Trwa napływ odwiedzających · '+Math.ceil((game.traffic.duration-game.traffic.elapsed)/1000)+' s kampanii':'Dzisiejszy ruch zakończony';
+$('arrival-clock').textContent=pending?'Ruch z marketingu i organika · zakupy zależą od cen i promocji':'Dzisiejszy ruch zakończony';
 if(incoming.length)$('arrival-clock').textContent+=' · dostawa za '+Math.ceil(Math.min(...incoming.map(d=>d.remainingMs))/1000)+' s';
 const job=live.job&&game.orders.find(o=>o.id===live.job.id&&o.status==='new');
 const progress=job?live.job.elapsed/E.packingDuration(game):0;
@@ -32,7 +32,7 @@ const operation=job?(progress<.32?'Idzie po produkt':progress<.52?'Przenosi prod
 $('packing-status').textContent=stopped?'Praca wstrzymana':operation+(job?' #'+job.id:'')+' · '+game.packedToday+' spakowanych';
 $('scene-status').textContent=packed?packed+' paczek gotowych dla kuriera':job?operation:pending?'Czekamy na kolejnego klienta':'Realizacja zamówień zakończona';
 $('mission-title').textContent=packed?'Paczki gotowe do drogi.':waiting?'Magazyn pracuje.':pending?'Sklep jest otwarty.':'Dzisiejszy ruch obsłużony.';
-$('mission-copy').textContent=packed?'Postać sama kompletuje i pakuje kolejne zamówienia. Odbierz gotowe paczki przyciskiem wysyłki.':waiting?'Zobacz, jak produkt wędruje z regału do paczki. Pakowanie odbywa się automatycznie; możesz też pomóc.':pending?'Sesje napływają na żywo. Cena, promocja i źródło ruchu decydują o zakupie. Zamówienia z kolejki pojawiają się co 5–15 sekund; brak konwersji wydłuża oczekiwanie.':'Możesz teraz zamknąć dzień i przejrzeć zysk oraz koszty.';
+$('mission-copy').textContent=packed?'Postać sama kompletuje i pakuje kolejne zamówienia. Odbierz gotowe paczki przyciskiem wysyłki.':waiting?'Zobacz, jak produkt wędruje z regału do paczki. Pakowanie odbywa się automatycznie; możesz też pomóc.':pending?'Sesje napływają na żywo. Cena, promocja i źródło ruchu decydują o zakupie. Zamówienie pojawia się w chwili zakupu, bez dodatkowego odliczania.':'Możesz teraz zamknąć dzień i przejrzeć zysk oraz koszty.';
 $('main-action').textContent=packed?'Wyślij '+packed+' paczek →':waiting?'Trwa automatyczne pakowanie…':pending?'Czekamy na zamówienie…':'Podsumuj dzień →';
 $('main-action').disabled=!packed&&(waiting>0||pending);window.refreshMobileControls?.();$('action-note').textContent='Automatyczne pakowanie: '+(game.worker?'9':'16')+' s / paczkę · wyślij przed końcem dnia; niewysłane zostaną anulowane';
 };
