@@ -131,3 +131,7 @@ Od otwarcia sprzedaży odliczamy 300 sekund aktywnej gry. Koniec automatycznie r
 
 ### Tempo i organik 0.8.9
 Zamówienia zakwalifikowane do kolejki pojawiają się co 5–15 sekund; przy braku konwersji oczekiwanie może być dłuższe. Ruch bezpłatny rośnie z wiekiem sklepu (do 240 dodatkowych sesji), wysłanymi zamówieniami (do 180), marką i dojrzałym SEO. Reputacja wpływa na ten wzrost, a obsłużeni klienci podnoszą bazową konwersję bezpłatnej puli. Organik obejmuje też ruch bezpośredni i powroty. Cena, promocja i marketing nadal wpływają na konwersję, a nasycenie budżetu pozostaje. Są to parametry gry, nie prognoza realnego sklepu.
+
+
+### Zapasy i pełny dzień ruchu 0.8.10
+Alerty zapasów są domyślnie zwinięte do licznika; lista zachowuje rozwinięcie podczas aktualizacji i ma własne przewijanie. Nowe plany kampanii rozkładają opłacone wizyty na całe 5 minut dnia, bez zwiększania budżetu ani liczby opłaconych wizyt. Analityka pokazuje 5 minut. Trwające zapisy ze starym trzyminutowym planem zachowują jego wartości; nowy czas ruchu obowiązuje od kolejnego otwarcia dnia.
