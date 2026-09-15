@@ -17,7 +17,7 @@ window.refreshLiveUI=function(){
 window.refreshStockAlerts?.();
 const active=game.phase==='fulfill',live=active?E.ensureLive(game):null,stopped=paused||document.hidden||$('dialog').open;
 const incoming=game.deliveries.filter(d=>d.remainingMs!==undefined);strip.hidden=!active&&!incoming.length;document.querySelectorAll('[data-delivery-clock]').forEach((el,i)=>{if(incoming[i])el.textContent=Math.ceil(incoming[i].remainingMs/1000)+' s';});$('pause-live').setAttribute('aria-pressed',String(paused));$('pause-live').textContent=paused?'▶ Wznów':'Ⅱ Pauza';Warehouse.setPaused?.(active?stopped:(document.hidden||$('dialog').open));
-if(!active){$('main-action').disabled=false;$('live-state').textContent=stopped?'Pauza':'Dostawy w drodze';$('arrival-clock').textContent=incoming.length?'Najbliższa dostawa za '+Math.ceil(Math.min(...incoming.map(d=>d.remainingMs))/1000)+' s':'';strip.classList.toggle('is-paused',stopped);return;}
+if(!active){$('main-action').disabled=false;window.refreshJourney?.();window.refreshMobileControls?.();$('live-state').textContent=stopped?'Pauza':'Dostawy w drodze';$('arrival-clock').textContent=incoming.length?'Najbliższa dostawa za '+Math.ceil(Math.min(...incoming.map(d=>d.remainingMs))/1000)+' s':'';strip.classList.toggle('is-paused',stopped);return;}
 const pending=E.hasDemand(game);const waiting=game.orders.filter(o=>o.status==='new').length,packed=game.orders.filter(o=>o.status==='packed').length;
 $('live-state').textContent=stopped?'Pauza':pending?'Sklep działa na żywo':'Ruch dzisiejszej kampanii zakończony';strip.classList.toggle('is-paused',stopped);
 $('arrival-clock').textContent=live.queue.length?'Nowe zamówienie za około '+Math.ceil(live.nextIn/1000)+' s · kolejne odstępy 10–50 s':pending?'Trwa napływ odwiedzających · '+Math.ceil((game.traffic.duration-game.traffic.elapsed)/1000)+' s kampanii':'Dzisiejszy ruch zakończony';
@@ -30,7 +30,7 @@ $('scene-status').textContent=packed?packed+' paczek gotowych dla kuriera':job?o
 $('mission-title').textContent=packed?'Paczki gotowe do drogi.':waiting?'Magazyn pracuje.':pending?'Sklep jest otwarty.':'Dzisiejszy ruch obsłużony.';
 $('mission-copy').textContent=packed?'Postać sama kompletuje i pakuje kolejne zamówienia. Odbierz gotowe paczki przyciskiem wysyłki.':waiting?'Zobacz, jak produkt wędruje z regału do paczki. Pakowanie odbywa się automatycznie; możesz też pomóc.':pending?'Sesje napływają na żywo. Cena, promocja i źródło ruchu decydują o zakupie. Zamówienia z kolejki pojawiają się co 10–50 sekund; brak konwersji wydłuża oczekiwanie.':'Możesz teraz zamknąć dzień i przejrzeć zysk oraz koszty.';
 $('main-action').textContent=packed?'Wyślij '+packed+' paczek →':waiting?'Trwa automatyczne pakowanie…':pending?'Czekamy na zamówienie…':'Podsumuj dzień →';
-$('main-action').disabled=!packed&&(waiting>0||pending);$('action-note').textContent='Automatyczne pakowanie: '+(game.worker?'9':'16')+' s / paczkę · wysyłka na Twoje polecenie';
+$('main-action').disabled=!packed&&(waiting>0||pending);window.refreshMobileControls?.();$('action-note').textContent='Automatyczne pakowanie: '+(game.worker?'9':'16')+' s / paczkę · wysyłka na Twoje polecenie';
 };
 setInterval(()=>{
 const now=performance.now(),dt=Math.min(1000,Math.max(0,now-last));last=now;
