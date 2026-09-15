@@ -1,6 +1,6 @@
 {
   "name": "shopshift",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "private": true,
   "description": "SHOPSHIFT browser game vertical slice",
   "scripts": {

@@ -2,21 +2,21 @@
 (function(root,factory){const api=factory();if(typeof module==='object')module.exports=api;else root.Shopshift=api;})(globalThis,function(){
 'use strict';
 const PRODUCTS=[
-{id:'serum',name:'Dewdrop',kind:'Serum nawilżające',cost:72,price:179,color:'#c65969',shape:'dropper'},
-{id:'cream',name:'Cloud Nine',kind:'Krem do twarzy',cost:58,price:149,color:'#c1c1c1',shape:'jar'},
-{id:'cleanser',name:'Fresh Start',kind:'Żel oczyszczający',cost:42,price:109,color:'#bababa',shape:'pump'},
-{id:'mist',name:'Soft Rain',kind:'Mgiełka do twarzy',cost:39,price:100,color:'#b3b3b3',shape:'spray'},
-{id:'mask',name:'Sunday Reset',kind:'Maska regenerująca',cost:89,price:219,color:'#de939d',shape:'jar'},
-{id:'oil',name:'Golden Hour',kind:'Olejek do twarzy',cost:115,price:279,color:'#c4c4c4',shape:'dropper'},
-{id:'night',name:'Midnight Repair',kind:'Krem nocny z ceramidami',cost:135,price:329,color:'#9c8aac',shape:'jar'},
-{id:'eyes',name:'Bright Eyes',kind:'Serum pod oczy',cost:98,price:249,color:'#d2b8a5',shape:'dropper'},
-{id:'spf',name:'City Shield',kind:'Krem ochronny SPF 50',cost:65,price:169,color:'#dad4c8',shape:'pump'},
-{id:'peel',name:'Velvet Peel',kind:'Peeling enzymatyczny',cost:78,price:199,color:'#c78b98',shape:'jar'},
-{id:'retinal',name:'After Dark',kind:'Serum z retinalem',cost:158,price:379,color:'#8c829b',shape:'dropper'},
-{id:'body',name:'Body Ritual',kind:'Balsam do ciała',cost:88,price:229,color:'#bbaaa0',shape:'pump'},
-{id:'hair',name:'Silk Therapy',kind:'Olejek do włosów',cost:102,price:259,color:'#b6a77c',shape:'dropper'},
-{id:'elixir',name:'Lumière Elixir',kind:'Koncentrat peptydowy',cost:195,price:449,color:'#a99c85',shape:'dropper'},
-{id:'signature',name:'Signature 500',kind:'Krem luksusowy',cost:225,price:500,color:'#777782',shape:'jar'}];
+{id:'serum',name:'Dewdrop',kind:'Serum nawilżające',cost:112,price:179,color:'#c65969',shape:'dropper'},
+{id:'cream',name:'Cloud Nine',kind:'Krem do twarzy',cost:99,price:149,color:'#c1c1c1',shape:'jar'},
+{id:'cleanser',name:'Fresh Start',kind:'Żel oczyszczający',cost:75,price:109,color:'#bababa',shape:'pump'},
+{id:'mist',name:'Soft Rain',kind:'Mgiełka do twarzy',cost:71,price:100,color:'#b3b3b3',shape:'spray'},
+{id:'mask',name:'Sunday Reset',kind:'Maska regenerująca',cost:137,price:219,color:'#de939d',shape:'jar'},
+{id:'oil',name:'Golden Hour',kind:'Olejek do twarzy',cost:155,price:279,color:'#c4c4c4',shape:'dropper'},
+{id:'night',name:'Midnight Repair',kind:'Krem nocny z ceramidami',cost:199,price:329,color:'#9c8aac',shape:'jar'},
+{id:'eyes',name:'Bright Eyes',kind:'Serum pod oczy',cost:146,price:249,color:'#d2b8a5',shape:'dropper'},
+{id:'spf',name:'City Shield',kind:'Krem ochronny SPF 50',cost:119,price:169,color:'#dad4c8',shape:'pump'},
+{id:'peel',name:'Velvet Peel',kind:'Peeling enzymatyczny',cost:121,price:199,color:'#c78b98',shape:'jar'},
+{id:'retinal',name:'After Dark',kind:'Serum z retinalem',cost:211,price:379,color:'#8c829b',shape:'dropper'},
+{id:'body',name:'Body Ritual',kind:'Balsam do ciała',cost:153,price:229,color:'#bbaaa0',shape:'pump'},
+{id:'hair',name:'Silk Therapy',kind:'Olejek do włosów',cost:157,price:259,color:'#b6a77c',shape:'dropper'},
+{id:'elixir',name:'Lumière Elixir',kind:'Koncentrat peptydowy',cost:243,price:449,color:'#a99c85',shape:'dropper'},
+{id:'signature',name:'Signature 500',kind:'Krem luksusowy',cost:264,price:500,color:'#777782',shape:'jar'}];
 const LEVELS=[{name:'Domowe studio',size:'24 m²',capacity:150,rent:35,limit:25,upgrade:0},{name:'Pracownia marki',size:'70 m²',capacity:450,rent:85,limit:65,upgrade:2400},{name:'Centrum wysyłek',size:'180 m²',capacity:1200,rent:170,limit:160,upgrade:6000}];
 const CAMPAIGNS=[{name:'Ruch organiczny',cost:0,visits:24},{name:'Social starter',cost:60,visits:95},{name:'Beauty creators',cost:180,visits:220},{name:'Pełna kampania',cost:480,visits:430}];
 

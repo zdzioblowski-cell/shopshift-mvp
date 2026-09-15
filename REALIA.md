@@ -90,3 +90,7 @@ Przy braku środków spłacamy dostępne odsetki, potem kapitał, a reszta pozos
 
 ## Balans rozgrywki 0.8.0
 Katalog obejmuje 15 fikcyjnych kosmetyków z cenami bazowymi 100–500 zł i kosztami zakupu 39–225 zł. Konwersje bazowe Google 7,5%, Meta 4,5%, Instagram 4%, TikTok 3%, artykuły 4,5% są celowo przyspieszonymi parametrami gry, nie benchmarkiem ani prognozą rynkową. Progi nasycenia, rosnący koszt marginalnej wizyty i spadająca jakość dodatkowej widowni pozostają. Ruch przyspiesza na początku kampanii (postęp czasu do potęgi 0,65); suma opłaconych wizyt pozostaje bez zmian. Przyjęte zamówienia i historyczny koszt zakupionego towaru zachowują swoje wartości przy aktualizacji. Ceny przyszłych ofert poniżej 100 zł są jednorazowo podniesione do nowych cen katalogowych. Ceny po rabacie mogą być niższe niż 100 zł.
+
+
+## Korekta narzutu 0.8.1
+Bazowy narzut wynosi 40–90% względem kosztu Bloom: (cena katalogowa − koszt zakupu) / koszt zakupu. Odpowiada to marży na sprzedaży około 28,6–47,4%, przed logistyką, reklamami, kosztami stałymi i zwrotami. Koszty bazowe: 71–264 zł, ceny katalogowe nadal 100–500 zł. Rabat hurtowy Luma −14% może podnieść narzut ponad bazowy zakres. Ceny ustawiane przez gracza i promocje zmieniają faktyczną rentowność. Zapasy i dostawy zakupione wcześniej zachowują historyczny koszt; nowe dostawy mają nowe stawki.

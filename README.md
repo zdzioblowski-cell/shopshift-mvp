@@ -94,3 +94,7 @@ Nowy start przetestujesz po wyeksportowaniu dotychczasowego zapisu i wybraniu Op
 
 ### Zmiany 0.8.0
 15 kosmetyków za 100–500 zł, silniejszy wpływ kampanii na sprzedaż i szybszy początek napływu ruchu. Nad magazynem widoczny licznik wizyt, zamówień, kolejki i przychodu z reklam oraz doładowanie Google Ads. Migracja zapisów zachowuje firmę, historię, koszt zapasów i przyjęte koszyki. Parametry konwersji to przyspieszony model gry; nasycenie budżetów pozostaje.
+
+
+### Zmiany 0.8.1
+Bazowy narzut wynosi 40–90% względem kosztu Bloom: (cena katalogowa − koszt zakupu) / koszt zakupu. Odpowiada to marży na sprzedaży około 28,6–47,4%, przed logistyką, reklamami, kosztami stałymi i zwrotami. Koszty bazowe: 71–264 zł, ceny katalogowe nadal 100–500 zł. Rabat hurtowy Luma −14% może podnieść narzut ponad bazowy zakres. Ceny ustawiane przez gracza i promocje zmieniają faktyczną rentowność. Zapasy i dostawy zakupione wcześniej zachowują historyczny koszt; nowe dostawy mają nowe stawki.
