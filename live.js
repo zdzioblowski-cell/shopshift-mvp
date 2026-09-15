@@ -24,7 +24,7 @@ const incoming=game.deliveries.filter(d=>d.remainingMs!==undefined);strip.hidden
 if(!active){$('main-action').disabled=false;window.refreshJourney?.();window.refreshMobileControls?.();$('live-state').textContent=stopped?'Pauza':'Dostawy w drodze';$('arrival-clock').textContent=incoming.length?'Najbliższa dostawa za '+Math.ceil(Math.min(...incoming.map(d=>d.remainingMs))/1000)+' s':'';strip.classList.toggle('is-paused',stopped);return;}
 const pending=E.hasDemand(game);const waiting=game.orders.filter(o=>o.status==='new').length,packed=game.orders.filter(o=>o.status==='packed').length;
 $('live-state').textContent=stopped?'Pauza':pending?'Sklep działa na żywo':'Ruch dzisiejszej kampanii zakończony';strip.classList.toggle('is-paused',stopped);
-$('arrival-clock').textContent=pending?'Ruch z marketingu i organika · zakupy zależą od cen i promocji':'Dzisiejszy ruch zakończony';
+$('arrival-clock').textContent=pending?(waiting+packed>=E.LEVELS[game.level].limit?'Realizacja pełna — spakuj i wyślij paczki, aby przyjmować kolejne zakupy':!game.stock.some(x=>x.qty>=(E.config(game).promo.type==='bundle'?4:1))?'Brak towaru do sprzedaży — zamów dostawę':'Ruch z marketingu i organika · zakupy zależą od cen i promocji'):'Dzisiejszy ruch zakończony';
 if(incoming.length)$('arrival-clock').textContent+=' · dostawa za '+Math.ceil(Math.min(...incoming.map(d=>d.remainingMs))/1000)+' s';
 const job=live.job&&game.orders.find(o=>o.id===live.job.id&&o.status==='new');
 const progress=job?live.job.elapsed/E.packingDuration(game):0;
