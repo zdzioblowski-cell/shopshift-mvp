@@ -114,3 +114,7 @@ Bazowy narzut 40–60%. Aktywna gra automatycznie pakuje i wysyła; usunięto ob
 
 ### Sterowanie i komunikaty 0.8.5
 Przywrócono ręczne pakowanie/pomoc oraz wysyłkę przyciskiem; automatyczne pakowanie przez postać pozostaje. Aktywna gra nie zleca już automatycznej wysyłki. Narzut bazowy pozostaje 40–60%. Powiadomienia w otwartym oknie są wyświetlane wewnątrz niego, nad przyciemnieniem tła; po zamknięciu wracają na dół ekranu.
+
+
+### Porównania analityki 0.8.6
+Dzisiaj vs wczoraj, poprzedni dzień vs dzień wcześniejszy oraz ostatnie 7 dni (z bieżącym) vs poprzednie rozłączne 7 dni. Zmiany KPI i przychodu kanałów, ważone ROAS/CPA, konwersja w punktach procentowych. Brak historii oraz niepełny bieżący dzień są oznaczone; brakującej historii nie zastępujemy zerami.
