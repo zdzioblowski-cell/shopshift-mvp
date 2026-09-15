@@ -102,3 +102,7 @@ Bazowy narzut wynosi 40–90% względem kosztu Bloom: (cena katalogowa − koszt
 
 ### Podgląd kosztów 0.8.2
 Karty produktów oraz domyślny podgląd promocji używają aktualnej ceny wybranego dostawcy, także gdy magazyn zawiera tanie historyczne zapasy. W Promocjach można wybrać koszt historyczny zapasu, oznaczony w tabeli. Rzeczywisty wynik finansowy pozostaje oparty na cenie faktycznie kupionego towaru. ROAS mierzy przychód względem wydatków reklamowych, a nie zysk.
+
+
+### Wcześniejsza spłata 0.8.3
+W Finansowaniu znajduje się wyróżniona sekcja wcześniejszej spłaty całego kredytu. Rozliczenie pokazuje kapitał, naliczone odsetki, prowizję i gotówkę po spłacie. Brak środków i blokada w rozliczonym dniu mają czytelne wyjaśnienie. Dostęp również przez przycisk w Finansach.
