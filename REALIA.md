@@ -15,8 +15,8 @@ Wszystkie ceny produktów, przychody i koszty handlowe w grze są kwotami netto.
 | Narzut pracodawcy | 20,48% | 9,76% emerytalne + 6,5% rentowe + założone 1,67% wypadkowe + 2,45% FP + 0,10% FGŚP. Bez PPK i szczególnych zwolnień. Koszt przy 5500 zł to 6626,40 zł/mies., czyli 220,88 zł/dzień gry. |
 | Kurier | 13,50 zł/paczkę | Edytowalne założenie dla małego sklepu, nie gwarantowana oferta InPost. Rzeczywista stawka zależy od umowy, gabarytu, wolumenu i dopłat. Publiczne cenniki InPost zostały zaktualizowane od 1 marca 2026 r. |
 | Opakowanie | 1,80 zł; +0,60 zł przy ponad 2 szt. | Założenie obejmuje karton, wypełnienie, taśmę i etykietę. Sam karton 200×150×100 mm w sprawdzonej ofercie Kartony24 kosztował 0,71 zł netto przy 20 sztukach; oferta zależy od ilości. Dodatki i większy karton są szacunkiem. |
-| Płatności | 1,5% + 1 zł/transakcję | Punkt odniesienia: standardowe karty EOG w publicznym cenniku Stripe. BLIK i inne karty mogą mieć inne stawki. W grze opłata liczona jest od uproszczonej sprzedaży netto; w rzeczywistości operator nalicza ją od pełnej płatności klienta, w tym VAT. Nie jest to dokładna kalkulacja faktury operatora. |
-| Sklep i narzędzia | 99 zł/mies. | Założenie, do edycji. |
+| Płatności | 4,0% + 1 zł/transakcję | Punkt odniesienia: standardowe karty EOG w publicznym cenniku Stripe. BLIK i inne karty mogą mieć inne stawki. W grze opłata liczona jest od uproszczonej sprzedaży netto; w rzeczywistości operator nalicza ją od pełnej płatności klienta, w tym VAT. Nie jest to dokładna kalkulacja faktury operatora. |
+| Sklep i narzędzia | 299 zł/mies. dla nowej gry | Założenie, do edycji. |
 | Obsługa zwrotu | 6 zł/paczkę | Założenie: koszt wewnętrznej obsługi, transport zwrotny opłaca klient. Gra zakłada utratę wartości otwartego kosmetyku; nie symuluje wszystkich przyczyn, warunków prawnych ani częściowych zwrotów. |
 | Lokal | 35 / 85 / 170 zł/dzień | Założenie zależne od poziomu siedziby. Bez lokalizacji, kaucji i oddzielnych mediów. |
 
@@ -26,13 +26,13 @@ Google nie ma jednej stałej ceny kliknięcia. CPC zależy m.in. od aukcji, konk
 
 | Ścieżka | Bazowy CPC | Bazowa konwersja wizyt |
 |---|---:|---:|
-| Google Ads | 1,20 zł | 3,5% |
-| Meta Ads / Facebook | 0,80 zł | 1,8% |
-| Instagram | 0,90 zł | 1,5% |
-| TikTok | 0,55 zł | 1,0% |
-| Artykuły zewnętrzne | 350 zł/publikację | 2,0% z 15–40 wizyt polecających/publikację |
+| Google Ads | 1,20 zł | 7,5% |
+| Meta Ads / Facebook | 0,80 zł | 4,5% |
+| Instagram | 0,90 zł | 4,0% |
+| TikTok | 0,55 zł | 3,0% |
+| Artykuły zewnętrzne | 350 zł/publikację | 4,5% z 15–40 wizyt polecających/publikację |
 
-Rzeczywisty ruch zmienia się losowo o około ±30%. Cenę, reputację, promocję i rozwój marki uwzględniamy przy konwersji, z limitem 12%. Instagram jest częścią ekosystemu reklamowego Meta: rozdzielenie go w interfejsie jest decyzją gry. Jednoczesna emisja w Meta i Instagramie zmniejsza liczbę dodatkowych wizyt z Instagrama o 15% jako uproszczenie nakładania się odbiorców. Nie modelujemy pełnej atrybucji wielokanałowej ani aukcji reklamowej.
+Rzeczywisty ruch zmienia się losowo o około ±30%. Cenę, reputację, promocję i rozwój marki uwzględniamy przy konwersji, z limitem 18%. Instagram jest częścią ekosystemu reklamowego Meta: rozdzielenie go w interfejsie jest decyzją gry. Jednoczesna emisja w Meta i Instagramie zmniejsza liczbę dodatkowych wizyt z Instagrama o 15% jako uproszczenie nakładania się odbiorców. Nie modelujemy pełnej atrybucji wielokanałowej ani aukcji reklamowej.
 
 Nowy sklep ma około 2–5 wizyt organicznych dziennie i konwersję bazową 1,2%, więc zwykle nie otrzyma z nich zamówienia. Google zaleca ocenianie efektów SEO po tygodniach; niektóre zmiany wymagają miesięcy. W grze inwestycja SEO zaczyna wpływać na ruch po 30 dniach od poniesienia danego wydatku, a efekt jest stopniowy. Publikacje rozwijają również rozpoznawalność marki, ale zakup artykułu nie gwarantuje pozycji w wyszukiwarce.
 
@@ -86,3 +86,7 @@ Okres: 3, 6 lub 12 miesięcy gry. Raty z równą częścią kapitałową, co 30 
 Przy braku środków spłacamy dostępne odsetki, potem kapitał, a reszta pozostaje zaległością. Od przeterminowanego kapitału przyjmujemy 14,5% rocznie (parametr symulacji, nie wykładnia prawa); od pozostałego 12%. Bez odsetek od odsetek. Wcześniejsza spłata: 3% niewymagalnego kapitału, min. 100 zł. Nie symulujemy windykacji, BIK, zabezpieczeń, renegocjacji umowy ani zmian stóp. Prognoza kosztu nie uwzględnia opóźnień i wcześniejszego zamknięcia.
 
 Źródła odniesienia: [cennik Shoper](https://www.shoper.pl/pelny-cennik-uslug-shoper), [pożyczka dla firm mBank](https://www.mbank.pl/firmy/kredyty/biezace-zarzadzaniem-firma/pozyczka-dla-firm/), [tabele oprocentowania mBank](https://www.mbank.pl/pdf/oprocentowanie/tabela-firmy.pdf), [warunki linii ING](https://www.ing.pl/male-firmy/kredyty-i-pozyczki/linia-kredytowa-dla-malych-firm).
+
+
+## Balans rozgrywki 0.8.0
+Katalog obejmuje 15 fikcyjnych kosmetyków z cenami bazowymi 100–500 zł i kosztami zakupu 39–225 zł. Konwersje bazowe Google 7,5%, Meta 4,5%, Instagram 4%, TikTok 3%, artykuły 4,5% są celowo przyspieszonymi parametrami gry, nie benchmarkiem ani prognozą rynkową. Progi nasycenia, rosnący koszt marginalnej wizyty i spadająca jakość dodatkowej widowni pozostają. Ruch przyspiesza na początku kampanii (postęp czasu do potęgi 0,65); suma opłaconych wizyt pozostaje bez zmian. Przyjęte zamówienia i historyczny koszt zakupionego towaru zachowują swoje wartości przy aktualizacji. Ceny przyszłych ofert poniżej 100 zł są jednorazowo podniesione do nowych cen katalogowych. Ceny po rabacie mogą być niższe niż 100 zł.

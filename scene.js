@@ -56,7 +56,7 @@ line(P(0,0,7),P(roomWidth,0,7),'#c1c1c1',4);line(P(0,0,7),P(0,roomDepth,7),'#c1c
 poly([P(0,65,105),P(0,170,105),P(0,170,45),P(0,65,45)],'#fcfcfc');poly([P(.5,71,100),P(.5,164,100),P(.5,164,50),P(.5,71,50)],'#d0d0d0');line(P(1,118,100),P(1,118,50),'#fefefe',4);line(P(1,71,76),P(1,164,76),'#fefefe',3);
 // Brand sign.
 const sign=P(180,0,88);c.save();c.translate(...sign);c.transform(1,.47,0,1,0,0);c.fillStyle='#eeeeee';c.fillRect(-7,-22,113,35);c.fillStyle='#6f6f6f';c.font='bold 14px Segoe UI';c.fillText('SHOPSHIFT',0,0);c.restore();
-plant(25,22);shelf(255,13,s.stock[0].qty+s.stock[1].qty+s.stock[4].qty,'#a4a4a4');shelf(365,13,s.stock[2].qty+s.stock[3].qty+s.stock[5].qty,'#9d9d9d');
+plant(25,22);shelf(255,13,s.stock.filter((_,i)=>i%2===0).reduce((n,x)=>n+x.qty,0),'#a4a4a4');shelf(365,13,s.stock.filter((_,i)=>i%2===1).reduce((n,x)=>n+x.qty,0),'#9d9d9d');
 if(s.level>0)shelf(420,87,s.stock[4].qty+s.stock[5].qty,'#b8b8b8');
 // Office rug, desk, swivel chair.
 poly([P(27,168,.3),P(172,168,.3),P(172,279,.3),P(27,279,.3)],'#bebebe');

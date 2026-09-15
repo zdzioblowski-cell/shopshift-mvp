@@ -15,6 +15,7 @@ $('pause-live').addEventListener('click',()=>{paused=!paused;last=performance.no
 function arrivalNotice(o){notice.innerHTML='<span class="notice-icon">▣</span><span><small>NOWE ZAMÓWIENIE</small><strong>#'+o.id+' · '+E.PRODUCTS[o.index].name+'</strong><span>'+money(o.price)+' · '+E.qty(o)+' szt. · kliknij, aby zobaczyć</span></span>';notice.classList.remove('show');void notice.offsetWidth;notice.classList.add('show');clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>notice.classList.remove('show'),8000);LiveAudio.play('order');}
 window.refreshLiveUI=function(){
 window.refreshStockAlerts?.();
+window.refreshCampaignPulse?.();
 const active=game.phase==='fulfill',live=active?E.ensureLive(game):null,stopped=paused||document.hidden||$('dialog').open;
 const incoming=game.deliveries.filter(d=>d.remainingMs!==undefined);strip.hidden=!active&&!incoming.length;document.querySelectorAll('[data-delivery-clock]').forEach((el,i)=>{if(incoming[i])el.textContent=Math.ceil(incoming[i].remainingMs/1000)+' s';});$('pause-live').setAttribute('aria-pressed',String(paused));$('pause-live').textContent=paused?'▶ Wznów':'Ⅱ Pauza';Warehouse.setPaused?.(active?stopped:(document.hidden||$('dialog').open));
 if(!active){$('main-action').disabled=false;window.refreshJourney?.();window.refreshMobileControls?.();$('live-state').textContent=stopped?'Pauza':'Dostawy w drodze';$('arrival-clock').textContent=incoming.length?'Najbliższa dostawa za '+Math.ceil(Math.min(...incoming.map(d=>d.remainingMs))/1000)+' s':'';strip.classList.toggle('is-paused',stopped);return;}
