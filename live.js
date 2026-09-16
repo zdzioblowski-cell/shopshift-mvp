@@ -34,8 +34,8 @@ $('scene-status').textContent=packed?packed+' paczek gotowych · odbiór od 10':
 $('scene-pack').textContent=canPack?'Spakuj paczkę +1 ↗':'Spakuj paczkę ↗';$('scene-pack').classList.toggle('pack-ready',canPack);
 $('mission-title').textContent=canShip?'Partia gotowa do wysyłki.':canPack?'Czas spakować paczkę!':'Zbieramy kolejną partię.';
 $('mission-copy').textContent='Każde kliknięcie pakuje jedno zamówienie. Kurier odbiera od 10 paczek; mniejsze partie i zaległości przechodzą na kolejny dzień.';
-$('main-action').textContent=canShip?'Wyślij '+packed+' paczek →':canPack?'Spakuj paczkę +1 →':packed?'Do wysyłki brakuje '+(10-packed)+' paczek':pending?'Czekamy na zamówienie…':'Podsumuj dzień →';
-$('main-action').disabled=!canShip&&!canPack&&(pending||packed>0||waiting>0);
+$('main-action').textContent=canShip?'Wyślij '+packed+' paczek →':'Do wysyłki pozostało min. '+(10-packed)+' paczek';
+$('main-action').disabled=!canShip;
 window.refreshMobileControls?.();$('action-note').textContent='Zespół: '+(1+E.staffCount(game))+' osób · '+game.packedToday+'/'+E.dailyCapacity(game)+' spakowanych dziś · partia: '+packed+'/10 minimum';
 
 };
