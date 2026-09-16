@@ -12,7 +12,7 @@ window.LiveAudio={play(kind){if(muted||!context||context.state!=='running')retur
 document.addEventListener('pointerdown',unlock,{capture:true});document.addEventListener('keydown',unlock,{capture:true});
 document.addEventListener('click',e=>{if(e.target.closest('#sound')){try{localStorage.setItem('shopshift-sound',muted?'off':'on');}catch{}unlock();soundLabel();}});
 $('pause-live').addEventListener('click',()=>{paused=!paused;last=performance.now();refreshLiveUI();});
-function arrivalNotice(o){notice.innerHTML='<span class="notice-icon">▣</span><span><small>NOWE ZAMÓWIENIE</small><strong>#'+o.id+' · '+E.PRODUCTS[o.index].name+'</strong><span>'+money(o.price)+' · '+E.qty(o)+' szt. · kliknij, aby zobaczyć</span></span>';notice.classList.remove('show');void notice.offsetWidth;notice.classList.add('show');clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>notice.classList.remove('show'),8000);LiveAudio.play('order');}
+function arrivalNotice(o){notice.innerHTML='<span class="notice-icon">▣</span><span><small>NOWE ZAMÓWIENIE</small><strong>#'+o.id+' · '+basketLabel(o)+'</strong><span>'+money(o.price)+' · '+E.qty(o)+' szt. · kliknij, aby zobaczyć</span></span>';notice.classList.remove('show');void notice.offsetWidth;notice.classList.add('show');clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>notice.classList.remove('show'),8000);LiveAudio.play('order');}
 window.refreshLiveUI=function(){
 window.refreshStockAlerts?.();
 window.refreshCampaignPulse?.();
