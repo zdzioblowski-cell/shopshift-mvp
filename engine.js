@@ -116,7 +116,7 @@ function review(s,stars,text){s.rating=(s.rating*s.ratingCount+stars)/(s.ratingC
 // Plan demand once; accept each order only when its arrival timer expires.
 function open(s){
 if(s.phase!=='plan')throw Error('Dzień jest już otwarty.');migrate(s);const b=s.business,costs=dayCosts(s),upfront=round(costs.ads+costs.agencyVariable);
-if(upfront>0&&s.cash<upfront)throw Error('Brak gotówki na reklamę i prowizję agencji. Zmniejsz budżety.');
+if(s.cash<upfront)log(s,'Dzień otwarty mimo niedoboru gotówki. Koszty kampanii obciążą saldo; sprawdź finansowanie.');
 s.cash=round(s.cash-upfront);entry(s,'ads',costs.ads);entry(s,'agency',costs.agencyVariable);b.dayCosts=costs;s.phase='fulfill';s.dayElapsed=0;s.orders=pending(s);s.lost=0;s.packedToday=0;s.visits=0;s.blockedVisits=0;
 b.channelStats=[];
 const growth=organicGrowth(s),organic=Math.round(2+rng(s)*3+growth.extra);
