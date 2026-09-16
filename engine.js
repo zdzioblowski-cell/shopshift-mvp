@@ -63,7 +63,7 @@ function basketStats(s){const shipped=s.orders.filter(o=>o.status==='shipped'),n
 function reportSnapshot(s,h){Object.assign(h,basketStats(s));const crm=crmMetrics(s),shipped=s.orders.filter(o=>o.status==='shipped');h.newCustomers=new Set(shipped.filter(o=>o.customerOrderNumber===1).map(o=>o.customerId)).size;h.returningCustomers=new Set(shipped.filter(o=>o.customerOrderNumber>1).map(o=>o.customerId)).size;h.repeatRate=crm.repeatRate;h.ltvCac=crm.ratio;h.roas=h.ads>0?h.sales/h.ads:null;h.conversion=h.visits>0?h.accepted/h.visits:null;h.products=PRODUCTS.map((p,i)=>({index:i,popularity:p.popularity,lost:s.traffic?.products[i]?.lost||0,substituted:s.traffic?.products[i]?.substituted||0,units:shipped.reduce((n,o)=>n+orderLines(o).filter(l=>l.productIndex===i).reduce((a,l)=>a+l.qty,0),0),revenue:round(shipped.reduce((n,o)=>n+orderLines(o).filter(l=>l.productIndex===i).reduce((a,l)=>a+l.priceTotal,0),0))}));h.cash=s.cash;h.lowStock=lowStock(s).length;}
 function basketValid(o,queued=false){if(o.lines===undefined)return true;const ls=o.lines,num=(v)=>Number.isFinite(v)&&v>=0;if(!Array.isArray(ls)||ls.length<1||ls.length>4||new Set(ls.map(l=>l?.productIndex)).size!==ls.length)return false;if(!ls.every(l=>l&&Number.isInteger(l.productIndex)&&PRODUCTS[l.productIndex]&&Number.isInteger(l.qty)&&l.qty>=1&&l.qty<=4&&[l.basePrice,l.price,l.baseTotal,l.discount,l.priceTotal].every(num)&&l.discount<=l.baseTotal&&Math.abs(l.baseTotal-l.discount-l.priceTotal)<.011&&(queued&&l.costTotal===null||num(l.costTotal)&&num(l.cost))&&num(l.returnRoll)&&l.returnRoll<=1&&typeof l.quality==='boolean'))return false;return Math.abs(ls.reduce((n,l)=>n+l.priceTotal,0)-o.price)<.011&&Math.abs((o.subtotal??o.price)-o.price)<.011&&ls.reduce((n,l)=>n+l.qty,0)===(o.qty||1)&&(queued||Math.abs(ls.reduce((n,l)=>n+l.costTotal,0)-o.cost)<.011);}
 
-function migrate(s){progressionInit(s);migrateBaskets(s);crmInit(s,true);if(s.pacingRevision!==3){if(s.live)s.live.nextIn=0;if(s.phase==='fulfill'&&s.traffic&&s.traffic.elapsed<300000){const t=s.traffic;for(const c of t.sources){c.planned-=c.served;c.served=0;c.start=t.elapsed;}t.duration=300000;t.nextIn=1000;}s.pacingRevision=3;}if(s.dayElapsed===undefined)s.dayElapsed=0;if(!s.tax)s.tax={loss:0};
+function migrate(s){if(s.live)s.live.job=null;progressionInit(s);migrateBaskets(s);crmInit(s,true);if(s.pacingRevision!==3){if(s.live)s.live.nextIn=0;if(s.phase==='fulfill'&&s.traffic&&s.traffic.elapsed<300000){const t=s.traffic;for(const c of t.sources){c.planned-=c.served;c.served=0;c.start=t.elapsed;}t.duration=300000;t.nextIn=1000;}s.pacingRevision=3;}if(s.dayElapsed===undefined)s.dayElapsed=0;if(!s.tax)s.tax={loss:0};
 if(s.catalogRevision!==2){for(let i=0;i<PRODUCTS.length;i++){if(!s.stock[i])s.stock.push({qty:0,value:0});if(s.prices[i]===undefined||s.prices[i]<100)s.prices[i]=PRODUCTS[i].price;}
 if(s.stockWatch)while(s.stockWatch.length<PRODUCTS.length)s.stockWatch.push(false);
 if(s.traffic){while(s.traffic.products.length<PRODUCTS.length)s.traffic.products.push({views:0,carts:0});for(const source of s.traffic.sources){const channel=CHANNELS.find(c=>c.id===source.id);if(channel)source.cvr=channel.cvr;}}
@@ -158,8 +158,8 @@ function tick(s,ms){if(!Number.isFinite(ms)||ms<0||ms>3600000)throw Error('Niepr
 function advance(s,ms,autoFulfill=false){
 if(!Number.isFinite(ms)||ms<0||ms>3600000)throw Error('Nieprawidłowy krok czasu.');
 if(s.phase==='bankrupt')return [];const active=s.phase==='fulfill',live=active?ensureLive(s):{queue:[],nextIn:0,job:null},events=[];
-function assign(){if(!active)return;if(live.job&&!s.orders.some(o=>o.id===live.job.id&&o.status==='new'))live.job=null;if(!packingLeft(s)){live.job=null;return;}if(!live.job){const o=s.orders.find(o=>o.status==='new');if(o)live.job={id:o.id,elapsed:0};}}
-if(active&&autoFulfill&&s.orders.some(o=>o.status==='packed'))events.push({type:'shipped',count:ship(s)});
+function assign(){if(!active||!autoFulfill){live.job=null;return;}if(live.job&&!s.orders.some(o=>o.id===live.job.id&&o.status==='new'))live.job=null;if(!packingLeft(s)){live.job=null;return;}if(!live.job){const o=s.orders.find(o=>o.status==='new');if(o)live.job={id:o.id,elapsed:0};}}
+if(active&&autoFulfill&&s.orders.filter(o=>o.status==='packed').length>=10)events.push({type:'shipped',count:ship(s)});
 assign();
 while(ms>0){
 const arrival=live.queue.length?live.nextIn:Infinity,packing=live.job?Math.max(0,packingDuration(s)-live.job.elapsed):Infinity;
@@ -171,13 +171,13 @@ const planned=live.queue.shift(),st=s.stock[planned.index];if(planned.liveOffer)
 if(reserveBasket(s,planned)){const order={...planned,id:s.nextId++,status:'new',acceptedDay:s.day};crmAccept(s,order);s.orders.push(order);const channel=s.business?.channelStats?.find(c=>c.id===order.channel);if(channel){channel.accepted++;channel.orderedValue=round((channel.orderedValue||0)+order.price+(order.deliveryCharge||0));}if(s.traffic){const m=Math.min(Math.ceil(s.traffic.duration/60000)-1,Math.max(0,Math.floor((s.traffic.elapsed-1)/60000)));if(s.traffic.minutes[m])s.traffic.minutes[m].orders++;}events.push({type:'order',order});log(s,'Nowe zamówienie #'+order.id+' · '+PRODUCTS[order.index].name+'.');}else s.lost++;
 live.nextIn=0;
 }
-if(live.job&&live.job.elapsed>=packingDuration(s)){const id=live.job.id;pack(s,id);events.push({type:'packed',id});if(autoFulfill)events.push({type:'shipped',count:ship(s)});live.job=null;}
+if(live.job&&live.job.elapsed>=packingDuration(s)){const id=live.job.id;pack(s,id);events.push({type:'packed',id});if(autoFulfill&&s.orders.filter(o=>o.status==='packed').length>=10)events.push({type:'shipped',count:ship(s)});live.job=null;}
 assign();if(!hasDemand(s)&&!live.job&&!s.deliveries.some(d=>d.remainingMs!==undefined))break;
 }
 return events;
 }
 function pack(s,id){if(s.phase!=='fulfill')throw Error('Otwórz najpierw dzień sprzedaży.');if(!packingLeft(s))throw Error('Wydajność zespołu na dziś wykorzystana. Zamówienia przejdą na jutro.');const o=s.orders.find(o=>o.id===id&&o.status==='new');if(!o)throw Error('Brak zamówienia do pakowania.');o.status='packed';s.packedToday++;}
-function ship(s){if(s.phase!=='fulfill')throw Error('Kurier przyjeżdża w otwartym dniu.');const pending=s.orders.filter(o=>o.status==='packed').slice(0,Math.max(0,dailyCapacity(s)-s.orders.filter(o=>o.status==='shipped').length));if(!pending.length)throw Error('Najpierw spakuj zamówienie.');
+function ship(s){if(s.phase!=='fulfill')throw Error('Kurier przyjeżdża w otwartym dniu.');const pending=s.orders.filter(o=>o.status==='packed').slice(0,Math.max(0,dailyCapacity(s)-s.orders.filter(o=>o.status==='shipped').length));if(pending.length<10)throw Error('Kurier odbiera co najmniej 10 paczek. Spakuj jeszcze '+(10-pending.length)+'. Mniejsza partia przechodzi na jutro.');
 for(const o of pending){const sales=round(o.price+(o.deliveryCharge??(o.freeShipping?0:9))),shipping=o.shippingCost??11,packaging=o.packagingCost??0,fee=round(sales*(o.paymentRate??.02)+(o.paymentFixed??0));s.cash=round(s.cash+sales-shipping-packaging-fee);entry(s,'sales',sales);entry(s,'cogs',o.cost);entry(s,'shipping',shipping);entry(s,'packaging',packaging);entry(s,'fees',fee);o.status='shipped';s.shipped++;crmShip(s,o,sales,o.cost+shipping+packaging+fee);s.returns.push({...o,due:s.day+2,sales});const channel=s.business?.channelStats?.find(c=>c.id===o.channel);if(channel){channel.orders++;channel.sales=round(channel.sales+sales);channel.contribution=round(channel.contribution+sales-o.cost-shipping-packaging-fee);}if(s.day-(o.acceptedDay||s.day)>1)review(s,3,'Paczka dotarła, ale realizacja trwała kilka dni.');else if(o.returnRoll>.15)review(s,5,'Dobrze zapakowane kosmetyki i szybka wysyłka.');}
 s.tutorial=Math.max(s.tutorial,4);log(s,'Kurier odebrał '+pending.length+' paczek.');return pending.length;}
 function settleTax(s){migrate(s);const result=round(profit(s.ledger)+(s.ledger.tax||0)),offset=Math.min(s.tax.loss,Math.max(0,result));s.tax.loss=round(s.tax.loss-offset+Math.max(0,-result));const due=round(Math.max(0,result-offset)*.19);entry(s,'tax',due);s.cash=round(s.cash-due);}
@@ -261,3 +261,5 @@ const api={GOALS,valuation,goalProgress,progressionInit,retryGoal,cashBridge,ope
 });
 
 
+
+// advance(..., true) is an explicit offline simulation helper used by tests; the browser calls tick() without it.

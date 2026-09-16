@@ -1,6 +1,6 @@
 /* Canvas renderer: original vector artwork, no external assets. */
 (function(){
-const canvas=document.getElementById('scene'),c=canvas.getContext('2d');let state=null,flash=0,last=0,visualTime=0,pausedVisual=false;
+const canvas=document.getElementById('scene'),c=canvas.getContext('2d');let state=null,flash=0,last=0,visualTime=0,pausedVisual=false,manualPackUntil=0;
 const P=(x,y,z=0)=>[480+(x-y)*.94,143+(x+y)*.44-z];
 function poly(points,color,stroke){c.beginPath();points.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));c.closePath();c.fillStyle=color;c.fill();if(stroke){c.strokeStyle=stroke;c.lineWidth=.8;c.stroke();}}
 function line(a,b,color,width=1){c.beginPath();c.moveTo(...a);c.lineTo(...b);c.strokeStyle=color;c.lineWidth=width;c.stroke();}
@@ -15,7 +15,7 @@ function bottle(x,y,z,color,h=21){cube(x,y,z,9,9,h,color,color,color);cube(x+1,y
 function plant(x,y){ellipse(x+12,y+12,0,23,9,'#6c6c6c1c');cube(x,y,0,22,22,23,'#e5e5e5','#bdbdbd','#cfcfcf');for(let i=0;i<6;i++){let p=P(x+11,y+11,25);c.save();c.translate(p[0],p[1]);c.rotate((i-2.5)*.42);c.beginPath();c.ellipse(0,-14-i%2*6,7,25,0,0,Math.PI*2);c.fillStyle=['#737373','#848484','#999999'][i%3];c.fill();c.restore();}}
 function mix(a,b,f){return a+(b-a)*Math.max(0,Math.min(1,f));}
 function route(points,t){const part=Math.min(points.length-2,Math.floor(t*(points.length-1))),f=t*(points.length-1)-part;return {x:mix(points[part][0],points[part+1][0],f),y:mix(points[part][1],points[part+1][1],f)};}
-function actorPose(s,time){
+function actorPose(s,time){if(visualTime<manualPackUntil)return {x:282,y:268,mode:'pack'};
 const live=s.live,job=s.phase==='fulfill'&&live?.job&&s.orders.find(o=>o.id===live.job.id&&o.status==='new');
 if(job){const f=Math.min(1,live.job.elapsed/(s.worker?9000:16000));
 if(f<.25)return {...route([[282,268],[365,268],[365,90]],f/.25),mode:'walk'};
@@ -74,7 +74,8 @@ if(flash>0){flash--;c.save();c.globalAlpha=Math.min(1,flash/25);c.fillStyle='#5b
 c.restore();
 }
 function frame(t){if(t-last>30){if(!pausedVisual)visualTime+=Math.min(100,t-last);draw(visualTime);last=t;}requestAnimationFrame(frame);}requestAnimationFrame(frame);
-window.Warehouse={update(s){state=s;},pulse(){flash=70;},setPaused(value){pausedVisual=value;}};
+window.Warehouse={update(s){state=s;},pulse(){flash=70;},packPulse(){flash=70;manualPackUntil=visualTime+1000;},setPaused(value){pausedVisual=value;}};
 })();
+
 
 

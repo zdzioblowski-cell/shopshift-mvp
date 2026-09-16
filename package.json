@@ -1,11 +1,11 @@
 {
   "name": "shopshift",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "private": true,
   "description": "SHOPSHIFT browser game vertical slice",
   "scripts": {
     "start": "node server.cjs",
-    "test": "node --test engine.test.cjs analytics.test.cjs tax.test.cjs day.test.cjs organic.test.cjs continuous.test.cjs capacity.test.cjs credit-review.test.cjs crm.test.cjs baskets.test.cjs popularity.test.cjs liquidity.test.cjs progression.test.cjs",
+    "test": "node --test engine.test.cjs analytics.test.cjs tax.test.cjs day.test.cjs organic.test.cjs continuous.test.cjs capacity.test.cjs credit-review.test.cjs crm.test.cjs baskets.test.cjs popularity.test.cjs liquidity.test.cjs progression.test.cjs manual-packing.test.cjs",
     "test:browser": "node browser.business.test.cjs",
     "test:motion": "node browser.motion.test.cjs",
     "test:flow": "node browser.flow.test.cjs",
@@ -22,3 +22,4 @@
     "node": ">=18"
   }
 }
+
