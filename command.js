@@ -28,3 +28,6 @@ $('drawer-title').textContent=names[tab]||'Twój sklep';$('scene-pack').title=wa
 })();
 
 const goalLink=document.getElementById('active-goal');if(goalLink){goalLink.tabIndex=0;goalLink.setAttribute('role','button');goalLink.setAttribute('aria-label','Otwórz cel i rozwój firmy');goalLink.addEventListener('click',e=>{if(!e.target.closest('button'))go('growth');});goalLink.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go('growth');}});}
+
+// Anchor the packing control to the order belt, independent of scene cropping.
+document.getElementById('command-orders').append(document.getElementById('scene-pack'));
