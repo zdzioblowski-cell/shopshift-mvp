@@ -1,14 +1,24 @@
-# SHOPSHIFT — osobny podgląd pracownic 3D
+# SHOPSHIFT — pracownice na tle sklepu (podgląd 2)
 
-Otwórz index.html przez serwer HTTP. Podgląd nie odczytuje i nie zapisuje stanu gry.
-Kobiecy model roboczy, dopasowana animacja szkieletowa chodu, płynny obrót do stycznej trasy, kamera orbitalna, zbliżenie, pauza oraz wybór 1/3/5 pracownic. Stałe odstępy na wspólnej zamkniętej trasie zapobiegają nakładaniu postaci. To nie jest jeszcze swobodne wyszukiwanie dróg ani dynamiczna symulacja tłumu. Scena i strój są robocze. Długość cyklu ustawiona na 1,46 m na podstawie ruchu stóp po przeniesieniu animacji.
+Osobny podgląd, bez odczytywania lub zmieniania zapisu gry. Otwórz index.html przez HTTP.
+
+Domyślnie pokazuje trzy pracownice 3D na istniejącym tle magazynu. Wybór 1/3/5 postaci, pauza, podgląd tras, przełączenie na scenę 3D i zbliżenie. Różne kolory ubrań. Kobiecy model z jasnym wariantem skóry i brązowymi włosami; ubiór nadal roboczy.
+
+## Ruch
+
+Pięć otwartych tras w oddzielnych strefach pracy. Po dojściu do stanowiska postać zatrzymuje się na 2–6 s, potem wybiera inne stanowisko swojej strefy i wraca lub idzie dalej. Nie ma wspólnej zamkniętej pętli. Obrót przed ruszeniem, przyspieszanie/hamowanie, miękkie przejście między chodem i postawą spoczynkową. Faza kroku zależy od przebytej odległości; cykl 1,54 m skalibrowany na podstawie ruchu stóp. Korekta wysokości oparta na spodzie butów.
+
+Trasy omijają stół, mają osobne korytarze i dodatkowy próg bezpieczeństwa odległości 0,7 m. To podgląd ruchu po przygotowanych trasach, nie swobodny system szukania dróg. Postoje symbolizują zadania; nie są jeszcze powiązane z zamówieniami ani animacją pakowania w grze. Tło jest płaską ilustracją; niewidoczna bryła stołu zapewnia przybliżone zasłanianie postaci stojącej za meblem.
 
 ## Źródła
-- Three.js 0.169.0 — MIT; kopia licencji vendor/LICENSE. https://threejs.org/license/
-- Model kobiecy Michelle z oficjalnych przykładów Three.js (Mixamo): https://github.com/mrdoob/three.js/blob/dev/examples/models/gltf/Michelle.glb
-- Źródło animacji Walk: Soldier z oficjalnych przykładów Three.js, w podglądzie nie jest wyświetlany; animacja przeliczana na kości modelu kobiecego. https://github.com/mrdoob/three.js/blob/dev/examples/models/gltf/Soldier.glb
-- Warunki stosowania modeli i animacji Mixamo w projektach: https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html
-Modele są użyte jako składnik demonstracji gry, nie jako osobno oferowana paczka assetów.
 
-## Sprawdzenie
-Test przeglądarkowy: ładowanie modeli, pięć postaci, brak przecięcia trasy ze strefą stołu, minimalne odległości na 500 próbkach pełnego obwodu, pauza, zbliżenie i szerokość ekranu mobilnego. Weryfikacja wizualna sylwetek i przeniesionej pozy. Docelowy wygląd, praca przy stole i wdrożenie do gry pozostają następnym etapem.
+- Three.js 0.169.0, MIT: vendor/LICENSE, https://threejs.org/license/
+- Kobiecy model Superhero Female FullBody, Hair Long i tekstury: Quaternius, Universal Base Characters Standard, CC0 1.0. Pełna informacja autora: character/License_Standard.txt. https://quaternius.com/packs/universalbasecharacters.html oraz https://quaternius.itch.io/universal-base-characters
+- Zmiany modelu w podglądzie: jasna tekstura skóry z pakietu, materiały ubrań, buty, włosy, przeniesienie animacji na szkielet modelu.
+- Źródło animacji Walk: Soldier z oficjalnych przykładów Three.js, niewyświetlany model źródłowy. https://github.com/mrdoob/three.js/blob/dev/examples/models/gltf/Soldier.glb
+- Warunki użycia Mixamo w grach: https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html
+- Tło: istniejący asset projektu ../assets/command-warehouse.jpg.
+
+## Walidacja
+
+Test przeglądarkowy: ładowanie wszystkich assetów bez błędów, wybór pięciu postaci, 120 sekund symulacji ruchu, minimalne odstępy, brak wejścia w strefę stołu, kierunek ruchu zgodny z obrotem postaci, wielokrotne postoje każdej pracownicy, pauza, przełącznik tła/sceny 3D, zbliżenie, brak poziomego przewijania na ekranie 390 px. Weryfikacja zrzutów na tle sklepu i w zbliżeniu.
